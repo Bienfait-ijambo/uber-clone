@@ -7,7 +7,7 @@ import App from './src/App.vue';
 import { createPinia } from 'pinia';
 
 
-const importIcons=import.meta.glob('./src/components/icons/**/*.vue')
+const importIcons=import.meta.glob('./src/components/**/*.vue')
 
 function registerComponents(app){
     for(const filePath of Object.keys(importIcons)){

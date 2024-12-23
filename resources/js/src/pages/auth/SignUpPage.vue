@@ -6,7 +6,6 @@ import Step1Signup from "./signup/Step1Signup.vue";
 import Step2Signup from "./signup/Step2Signup.vue";
 import Step3Signup from "./signup/Step3Signup.vue";
 import { useSignUpStore } from "../../stores/auth/signup-store";
-
 const signupStore=useSignUpStore()
 
 onMounted(()=>{
@@ -22,11 +21,14 @@ onMounted(()=>{
 
 </script>
 <template>
-    <div class="flex flex-row justify-between mt-40">
+    <div class="flex flex-row justify-between mt-40"  >
+       
+
         <div></div>
         <div class="w-[300px]">
             <h1 class="mb-3 text-3xl font-semibold">Sign Up</h1>
             <!-- <Step2/> -->
+          
                 <keep-alive>
                     <component :is="signupStore.currentStep"/>
                 </keep-alive>

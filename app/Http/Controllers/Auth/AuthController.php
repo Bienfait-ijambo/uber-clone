@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\SendEmailEvent;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -13,6 +13,46 @@ use Validator;
 
 class AuthController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        $fields = $request->all();
+
+        $errors = Validator::make($fields, [
+            'password' => 'required',
+            'email' => 'required',
+        ]);
+
+        if ($errors->fails()) {
+            return response([
+                'errors' => $errors->errors()->all(),
+            ], 422);
+        }
+
+        $user=User::getUserByEmail($fields['email']);
+
+        if(!$user || !Hash::check($fields['password'],$user->password)){
+
+            return response([
+                'message' =>'Email or password is incorrect !',
+                'isLogged'=>false
+
+            ],401);
+        }
+
+
+        $token = $user->createToken(env('SECRET_TOKEN_KEY'));
+        $accessToken= $token->plainTextToken;
+
+        return response([
+            'user' =>$user,
+            'token'=>$accessToken,
+            'isLogged'=>true,
+
+        ]);
+ 
+ 
+    }
 
     public function register(Request $request)
     {
@@ -47,4 +87,46 @@ class AuthController extends Controller
             'user' => $user
         ], 200);
     }
+
+
+   public function validateUserEmail(Request $request)
+   {
+    $email=$request->email;
+    $code=$request->otp_code; //
+
+    $user=User::getUserByEmail($email); //
+
+    if(!is_null($user)){
+
+        if($user->otp_code == $code){
+            
+            $user->where('email',$email)->update([
+                'is_valid_email' => User::IS_VALID_EMAIL,
+            ]);
+
+            return response([
+                'message' => 'Your email has been validated !',
+                'user' => $user
+            ], 200);
+
+        }else{
+            return response([
+                'message' => 'Invalid code',
+                'user' => $user
+            ], 200);
+        }
+    }else{
+      
+            return response([
+                'message' => 'user not found',
+                'user' => $user
+            ], 200);
+        
+    }
+
+   }
+
+
+
+   
 }
