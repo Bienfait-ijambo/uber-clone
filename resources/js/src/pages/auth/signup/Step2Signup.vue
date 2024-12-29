@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted } from "vue";
 import { useSignUpStore } from "../../../stores/auth/signup-store";
 import { storeToRefs } from "pinia";
 

@@ -2,6 +2,7 @@ import { defineStore ,acceptHMRUpdate} from "pinia";
 import { ref } from "vue";
 import { useVuelidate } from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
+import { App } from "../../api/api";
 
 export const useSignUpStore = defineStore("signup-store", () => {
     const currentStep = ref("currentStep");
@@ -40,16 +41,21 @@ export const useSignUpStore = defineStore("signup-store", () => {
         const valid=await vStep1$.value.$validate()
         if(!valid) return
         currentStep.value = step2.value;
+
+    
+
     }
 
    async function moveStep1() {
    
         currentStep.value = step1.value;
     }
-// change to step3
+   
+    // change to step3
    async function moveStep3() {
         const valid=await vStep2$.value.$validate()
-        if(!valid) return
+        
+        
         currentStep.value = step3.value;
     }
 
@@ -94,4 +100,4 @@ export const useSignUpStore = defineStore("signup-store", () => {
 
 if(import.meta.hot){
     import.meta.hot.accept(acceptHMRUpdate(useSignUpStore,import.meta.hot))
-}import { App } from './../../api/api';
+}

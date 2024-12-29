@@ -30,7 +30,6 @@ const props = defineProps(["loading"]);
     z-index: 1000;
     border-radius: 50%;
     border-top: 8px solid #212121;
-    /* border-top: 8px solid rgb(33, 18, 169); */
 
     width: 60px;
     height: 60px;
