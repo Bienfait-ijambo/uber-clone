@@ -8,11 +8,38 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-
+use DB;
 use Validator;
 
 class AuthController extends Controller
 {
+
+
+    public function getUsers(Request $request)
+    {
+        $query=$request->get('query');
+        $data=DB::table('users')
+        ->select('id','name','email','role')
+        ->where('name','like','%' . $query.'%')
+        ->paginate(10);
+
+        return response($data,200);
+
+    }
+
+
+    public function logout(Request $request)
+    {
+        DB::table('personal_access_tokens')
+        ->where('tokenable_id',$request->userId)
+        ->delete();
+
+        return response([
+            'message' =>'user logged out',
+      
+        ]);
+
+    }
 
     public function login(Request $request)
     {
@@ -34,8 +61,10 @@ class AuthController extends Controller
         if(!$user || !Hash::check($fields['password'],$user->password)){
 
             return response([
+               'errors' =>[
                 'message' =>'Email or password is incorrect !',
-                'isLogged'=>false
+                // 'isLogged'=>false
+               ]
 
             ],401);
         }
@@ -75,6 +104,7 @@ class AuthController extends Controller
             'name' => $fields['name'],
             'email' => $fields['email'],
             'otp_code' => $otp_code,
+            'role' => User::CUSTOMER_ROLE,
             'is_valid_email' => User::IS_INVALID_EMAIL,
             'password' => bcrypt($fields['password']),
         ]);
@@ -91,22 +121,37 @@ class AuthController extends Controller
 
    public function validateUserEmail(Request $request)
    {
-    $email=$request->email;
-    $code=$request->otp_code; //
+       $fields = $request->all();
 
-    $user=User::getUserByEmail($email); //
+        $errors = Validator::make($fields, [
+            'otp_code' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        if ($errors->fails()) {
+            return response([
+                'errors' => $errors->errors()->all(),
+            ], 422);
+        }
+
+    $user=User::getUserByEmail($fields['email']); //
 
     if(!is_null($user)){
 
-        if($user->otp_code == $code){
+        if($user->otp_code == $fields['otp_code']){
             
-            $user->where('email',$email)->update([
+            $user->where('email',$fields['email'])->update([
                 'is_valid_email' => User::IS_VALID_EMAIL,
             ]);
 
+            
+        $token = $user->createToken(env('SECRET_TOKEN_KEY'));
+        $accessToken= $token->plainTextToken;
+
             return response([
                 'message' => 'Your email has been validated !',
-                'user' => $user
+                'user' => $user,
+                'token' => $accessToken
             ], 200);
 
         }else{

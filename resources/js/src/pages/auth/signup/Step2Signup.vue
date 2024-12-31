@@ -3,10 +3,11 @@ import { useSignUpStore } from "../../../stores/auth/signup-store";
 import { storeToRefs } from "pinia";
 
 const signupStore = useSignUpStore();
-const {vStep2$,step2Input}=storeToRefs(signupStore)
+const {vStep2$,step2Input,loading}=storeToRefs(signupStore)
 
 </script>
 <template>
+    <Loading :loading="loading"/>
     <InputError :errors="vStep2$.password.$errors">
         <input
             v-model="step2Input.password"

@@ -1,9 +1,8 @@
-
 <script setup>
-const props=defineProps(['errors'])
+const props = defineProps(["errors"]);
 </script>
 <template>
-     <div :class="{ error:props.errors.length }">
+    <div :class="{ error: props.errors.length }">
         <slot></slot>
 
         <div
@@ -14,12 +13,11 @@ const props=defineProps(['errors'])
             <div class="error-msg">{{ error.$message }}</div>
         </div>
     </div>
-
 </template>
 
-<style  scoped>
-.error-msg{
-    color:red;
-    font:bold
+<style scoped>
+.error-msg {
+    color: red;
+    font: bold;
 }
 </style>

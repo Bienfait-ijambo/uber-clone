@@ -17,3 +17,17 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/users/verify-email', 'validateUserEmail');
 });
+
+
+
+Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::controller(AuthController::class)->group(function () {
+
+
+        Route::post('/logout', 'logout');
+        Route::get('/users', 'getUsers');
+    
+    });
+});
+   
+
