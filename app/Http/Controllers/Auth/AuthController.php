@@ -28,6 +28,23 @@ class AuthController extends Controller
     }
 
 
+    
+    public function updateRole(Request $request)
+    {
+        DB::table('users')
+        ->where('id',$request->userId)
+        ->update([
+            'role' => $request->role
+        ]);
+
+        return response([
+            'message' =>'role updated successfully',
+      
+        ],200);
+
+    }
+
+
     public function logout(Request $request)
     {
         DB::table('personal_access_tokens')

@@ -7,11 +7,13 @@ export const useUserStore = defineStore("user-store", () => {
     const userData = ref({});
     const loading = ref(false);
     const roles=ref(['ADMIN','CUSTOMER','DRIVER'])
+    const userId=ref(null)
 
     const modalVal=ref(false)
 
-    function toggleModal(){
+    function toggleModal(id){
         modalVal.value=!modalVal.value
+        userId.value=id
     }
 
 
@@ -19,10 +21,12 @@ export const useUserStore = defineStore("user-store", () => {
         try {
             loading.value = true;
             const data = await postData(`/users/modify-role`,{
-                role:role
+                role:role,
+                userId:userId.value
             });
             successMsg(data?.message)
             loading.value = false;
+            getUsers()
         } catch (errors) {
             loading.value = false;
             for (const message of errors) {

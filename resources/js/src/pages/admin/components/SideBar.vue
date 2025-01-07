@@ -55,17 +55,33 @@ const userData = getUserData();
                 <li
                     class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
                 >
-                        <PaymentIcon class="mt-1" />
-                        <span v-show="toggleSideBar" 
-                            >Payments</span
-                        >
+                    <PaymentIcon class="mt-1" />
+                    <span v-show="toggleSideBar">Payments</span>
                 </li>
+
 
                 <li
                     class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
                 >
-                        <UsersIcon class="mt-1" />
-                        <span v-show="toggleSideBar">Users</span>
+                   <Router-link class="flex" to="vehicles">
+                    <TruckIcon class="mt-1" />
+                    <span v-show="toggleSideBar" class="ml-2" >Vehicles</span>
+                   
+                   </Router-link>
+                </li>
+
+                 
+               
+
+               
+                <li
+                    class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
+                >
+                   <Router-link class="flex" to="users">
+                    <UsersIcon class="mt-1" />
+                    <span v-show="toggleSideBar" class="ml-2" >Users</span>
+                   
+                   </Router-link>
                 </li>
 
                 <hr />
@@ -113,13 +129,7 @@ const userData = getUserData();
                 </div>
             </div>
 
-            <!-- 
-        <div class="flex p-10">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias rem nesciunt assumenda quis deleniti distinctio necessitatibus quibusdam iure nemo eum accusantium neque, soluta tempora commodi vel ullam pariatur ea cupiditate.
-            </p>
-        </div>  -->
-
+        
             <slot name="main"></slot>
         </div>
         <!-- main section  -->

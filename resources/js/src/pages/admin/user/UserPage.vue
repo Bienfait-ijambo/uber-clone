@@ -4,10 +4,10 @@ import UserTable from "./components/UserTable.vue";
 import { useUserStore } from "../../../stores/user/user-store";
 import { storeToRefs } from "pinia";
 import { TailwindPagination } from "laravel-vue-pagination";
-import UserModal from "./components/UserModal.vue";
+import UserRoleModal from "./components/UserRoleModal.vue";
 const userStore = useUserStore();
 
-const { userData, loading,modalVal } = storeToRefs(userStore);
+const { userData, loading,modalVal,roles,modifyRole } = storeToRefs(userStore);
 
 onMounted(async () => {
     await userStore.getUsers();
@@ -15,10 +15,21 @@ onMounted(async () => {
 </script>
 <template>
     <div class="ml-4 mr-4">
-        <UserModal :show="modalVal" @toggleModal="userStore.toggleModal"/>
+
+        <UserRoleModal 
+        :show="modalVal" 
+        :loading="loading"
+        :roles="roles"
+        @toggleModal="userStore.toggleModal"
+         />
+
         <h1 class="text-2xl mb-4">User page</h1>
         
-        <UserTable :users="userData?.data" @get-users="userStore.getUsers"/>
+        <UserTable 
+        @toggleModal="userStore.toggleModal"
+        :users="userData?.data"
+         @get-users="userStore.getUsers"/>
+
         <div class="mt-2">
             <TailwindPagination
                 :data="userData"
