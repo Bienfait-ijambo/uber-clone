@@ -14,7 +14,7 @@ class VehicleController extends Controller
 {
     public function getVehicles(Request $request){
 
-        $data=DB::table('Vehicles')
+        $data=DB::table('vehicles')
         ->select('*')
         ->get();
 

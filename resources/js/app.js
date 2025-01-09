@@ -8,6 +8,7 @@ import { createPinia } from 'pinia';
 import ToastPlugin from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 
+
 const importIcons=import.meta.glob('./src/components/**/*.vue')
 
 function registerComponents(app){
@@ -25,8 +26,10 @@ const app=createApp(App)
 
 const pinia=createPinia()
 
+
 app.use(router)
 app.use(pinia)
 app.use(ToastPlugin)
+
 registerComponents(app)
 app.mount('#app')

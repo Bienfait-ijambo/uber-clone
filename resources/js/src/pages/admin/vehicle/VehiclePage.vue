@@ -3,8 +3,18 @@ import { onMounted } from "vue";
 import VehicleTable from "./components/VehicleTable.vue";
 import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
 import { storeToRefs } from "pinia";
-const vehicleStore=useVehicleStore()
-const { vehicleData} = storeToRefs(vehicleStore);
+import VehicleModal from "./components/VehicleModal.vue";
+const vehicleStore = useVehicleStore();
+const { vehicleData,modalVal,edit,vehicleInput } = storeToRefs(vehicleStore);
+
+function editVehicle(vehicle){
+    vehicleInput.value=vehicle
+    modalVal.value=true
+    edit.value=true
+}
+
+
+
 
 onMounted(async () => {
     await vehicleStore.getVehicles();
@@ -12,15 +22,17 @@ onMounted(async () => {
 </script>
 <template>
     <div class="ml-4 mr-4">
-{{vehicleData}}
+        {{ vehicleData }}
+
 
         <h1 class="text-2xl mb-4">Taxies</h1>
-        
-        <VehicleTable 
-        :vehicles="vehicleData"
-        />
 
-       
+        <VehicleModal @toggleModal="vehicleStore.toggleModal"   :show="modalVal"/>
+
+        <VehicleTable
+         @editVehicle="editVehicle" 
+         @toggleModal="vehicleStore.toggleModal" 
+         :vehicles="vehicleData" />
     </div>
 </template>
 <style scoped>
