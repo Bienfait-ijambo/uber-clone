@@ -40,7 +40,7 @@ Route::controller(AuthController::class)->group(function () {
         Route::get('/vehicles', 'getVehicles');
         Route::post('/vehicles/image', 'addImage');
         Route::put('/vehicles', 'update');
-        Route::delete('/vehicles', 'destory');
+        Route::delete('/vehicles', 'destroy');
 
         
     

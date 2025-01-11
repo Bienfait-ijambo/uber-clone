@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 
 const vehicleStore = useVehicleStore();
 const { vehicleValidation$, vehicleInput, loading,edit } = storeToRefs(vehicleStore);
-const saveBtnLabel=ref(edit?'Update':'Save');
+const saveBtnLabel=ref(edit.value?'Update':'Save');
 const props = defineProps(["show"]);
 const emit = defineEmits(["toggleModal"]);
 </script>

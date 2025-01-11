@@ -1,10 +1,11 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
-import { getData, postData, putData } from "../../helper/http";
+import { deleteData, getData, postData, putData } from "../../helper/http";
 import { showError, successMsg } from "../../helper/utils";
 import { useVuelidate } from "@vuelidate/core";
 import { required,numeric } from "@vuelidate/validators";
 export const useVehicleStore = defineStore("vehicle-store", () => {
+
     const vehicleData = ref({});
     const vehicleInput=ref({name:"",model:"",price:""})
     const modalVal=ref(false)
@@ -28,6 +29,49 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
 
     const vehicleValidation$ = useVuelidate(rules, vehicleInput);
 
+
+    
+    async function editVehicle(){
+       const data= await putData(`/vehicles`,{...vehicleInput.value})
+        modalVal.value=false
+        edit.value=false
+        vehicleInput.value={}
+        getVehicles
+        return data
+    }
+
+    async function createVehicle(){
+        const data=await postData(`/vehicles`,{...vehicleInput.value});
+        vehicleInput.value={}
+        edit.value=false
+        getVehicles()
+        return data
+    }
+
+
+    
+
+   
+    async function deleteVehicle(id) {
+      
+        try {
+            loading.value = true;
+        const data=await deleteData(`/vehicles`,{id:id});
+           successMsg(data?.message)
+            loading.value = false;
+        } catch (errors) {
+            loading.value = false;
+            for (const message of errors) {
+                showError(message);
+            }
+        }
+       
+    }
+
+
+
+
+   
     async function createOrUpdateVehicle() {
         const valid = await vehicleValidation$.value.$validate();
         if (!valid) return;
@@ -35,12 +79,11 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
         try {
             loading.value = true;
             const data = edit.value ?
-            await putData(`/vehicles`,{...vehicleInput.value})
-            : await postData(`/vehicles`,{...vehicleInput.value});
+            await editVehicle()
+            : await createVehicle();
             vehicleValidation$.value.$reset()
-            vehicleInput.value={}
-            modalVal.value=false
-            edit.value=false
+            
+          
            successMsg(data?.message)
             loading.value = false;
         } catch (errors) {
@@ -79,6 +122,7 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
         getVehicles,
         vehicleData,
         loading,
+        deleteVehicle
     
         
     };

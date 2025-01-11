@@ -18,7 +18,7 @@ const emit = defineEmits(["editVehicle", "uploadImage", "removeVehicle","toggleM
                 <td class="border border-gray-300 py-2 px-4">Model</td>
                 <td class="border border-gray-300 py-2 px-4">Price/Km</td>
                 <td class="border border-gray-300 py-2 px-4">Upload-image</td>
-                <td class="border border-gray-300 py-2 px-4">Actions</td>
+                <td class="border border-gray-300 py-2 px-4" >Actions</td>
             </tr>
         </thead>
 
@@ -44,7 +44,14 @@ const emit = defineEmits(["editVehicle", "uploadImage", "removeVehicle","toggleM
                     {{ vehicle?.price }} $
                 </td>
 
-                <td class="border 0 border-gray-300 py-2 px-4">
+                <td class="border 0 border-gray-300 px-2 ">
+               
+        <!-- <button  @click="emit('uploadImage', vehicle?.id)" class="border  border-gray-200 hover:bg-gray-300 rounded-sm px-2 py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+                        </svg>
+        </button> -->
                     <a
                         class="text-indigo-600 px-2 py-1 rounded-md border border-indigo-700 font-semibold hover:bg-indigo-500 hover:text-white"
                         @click="emit('uploadImage', vehicle?.id)"

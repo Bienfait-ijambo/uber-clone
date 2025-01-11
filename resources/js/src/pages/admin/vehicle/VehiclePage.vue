@@ -4,17 +4,35 @@ import VehicleTable from "./components/VehicleTable.vue";
 import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
 import { storeToRefs } from "pinia";
 import VehicleModal from "./components/VehicleModal.vue";
+import { confirmDelation } from "../../../helper/utils";
+import UploadImageModal from "./components/UploadImageModal.vue";
+import { useUploadVehicleImageStore } from "../../../stores/vehicle/upload-vehicle-image-store";
 const vehicleStore = useVehicleStore();
-const { vehicleData,modalVal,edit,vehicleInput } = storeToRefs(vehicleStore);
+const { vehicleData, modalVal, edit, vehicleInput } = storeToRefs(vehicleStore);
 
-function editVehicle(vehicle){
-    vehicleInput.value=vehicle
-    modalVal.value=true
-    edit.value=true
+const uploadVehicleImageStore = useUploadVehicleImageStore();
+const { modalVal: uploadImageVehicleModal, uploadImageInput } = storeToRefs(
+    uploadVehicleImageStore
+);
+
+function editVehicle(vehicle) {
+    vehicleInput.value = vehicle;
+    modalVal.value = true;
+    edit.value = true;
 }
 
+function removeVehicle(id) {
+    confirmDelation().then(async () => {
+        await vehicleStore.deleteVehicle(id);
+        vehicleStore.getVehicles();
+    });
+}
 
-
+function uploadImage(id) {
+    // ...
+    uploadImageInput.value.id = id;
+    uploadImageVehicleModal.value = true;
+}
 
 onMounted(async () => {
     await vehicleStore.getVehicles();
@@ -22,17 +40,24 @@ onMounted(async () => {
 </script>
 <template>
     <div class="ml-4 mr-4">
-        {{ vehicleData }}
-
-
         <h1 class="text-2xl mb-4">Taxies</h1>
 
-        <VehicleModal @toggleModal="vehicleStore.toggleModal"   :show="modalVal"/>
+        <UploadImageModal
+            @getVehicles="vehicleStore.getVehicles()"
+            :show="uploadImageVehicleModal"
+        />
+        <VehicleModal
+            @toggleModal="vehicleStore.toggleModal"
+            :show="modalVal"
+        />
 
         <VehicleTable
-         @editVehicle="editVehicle" 
-         @toggleModal="vehicleStore.toggleModal" 
-         :vehicles="vehicleData" />
+            @removeVehicle="removeVehicle"
+            @editVehicle="editVehicle"
+            @toggleModal="vehicleStore.toggleModal"
+            :vehicles="vehicleData"
+            @uploadImage="uploadImage"
+        />
     </div>
 </template>
 <style scoped>

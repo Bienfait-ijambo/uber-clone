@@ -30,6 +30,7 @@ export function postData(endpoint, input) {
             const data = await res.json();
             handleHttpError(data,resolve,reject)
         } catch (error) {
+           
             reject(error);
         }
     });
@@ -42,6 +43,25 @@ export function putData(endpoint, input) {
             const res = await fetch(App.apiBaseUrl + endpoint, {
                 headers:headers,
                 method: "PUT",
+                body: JSON.stringify(input),
+            });
+
+            const data = await res.json();
+            handleHttpError(data,resolve,reject)
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+
+export function deleteData(endpoint, input) {
+    const headers=getHeaders()
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch(App.apiBaseUrl + endpoint, {
+                headers:headers,
+                method: "DELETE",
                 body: JSON.stringify(input),
             });
 
@@ -88,3 +108,4 @@ export function handleHttpError(data,resolve,reject){
         resolve(data);
     }
 }
+
