@@ -84,9 +84,9 @@ class AuthController extends Controller
                ]
 
             ],401);
+           
         }
-
-
+  
         $token = $user->createToken(env('SECRET_TOKEN_KEY'));
         $accessToken= $token->plainTextToken;
 

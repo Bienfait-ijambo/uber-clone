@@ -20,15 +20,15 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->respond(function (Response $response) {
-            if ($response->getStatusCode() === 500) {
-                return response()->json([
-                    'errors' => ['Server Error']
-                ], 500);
-            }
+        // $exceptions->respond(function (Response $response) {
+        //     if ($response->getStatusCode() === 500) {
+        //         return response()->json([
+        //             'errors' => ['Server Error']
+        //         ], 500);
+        //     }
      
-            return $response;
-        });
+        //     return $response;
+        // });
         // $exceptions->render(function (NotFoundHttpException $e, Request $request) {
         //     if ($request->is('api/*')) {
                 // return response()->json([

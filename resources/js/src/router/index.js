@@ -3,6 +3,7 @@ import {
     createRouter,
     createWebHistory,
 } from "vue-router";
+import { isAdmin } from "../middleware/isAdmin";
 
 const routes = [
     {
@@ -23,15 +24,26 @@ const routes = [
           {
             path: "/users",
             component: () => import("../pages/admin/user/UserPage.vue"),
+            beforeEnter: isAdmin
+           
           },
           {
             path: "/vehicles",
             component: () => import("../pages/admin/vehicle/VehiclePage.vue"),
           },
+
           {
-            path: "/test",
-            component: () => import("../pages/admin/vehicle/TestPage.vue"),
+            path: "/welcome",
+            component: () => import("../pages/admin/welcome/WelcomePage.vue"),
           },
+          
+          {
+            path: "/profile",
+            component: () => import("../pages/admin/user/ProfilePage.vue"),
+          },
+          
+          
+          
           
         ]
        

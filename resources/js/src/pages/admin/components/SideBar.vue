@@ -3,6 +3,7 @@ import { App } from "../../../api/api";
 import { ref } from "vue";
 import { getUserData } from "../../../helper/utils";
 import { useLoginStore } from "../../../stores/auth/login-store";
+import { ADMIN_ROLE } from "../../../constants/roles";
 
 const toggleSideBar = ref(false);
 const topNavBarMenu = ref(false);
@@ -16,6 +17,7 @@ function toggle() {
     toggleSideBar.value = !toggleSideBar.value;
 }
 const userData = getUserData();
+
 </script>
 <template>
     <div class="h-screen flex flex-1">
@@ -46,43 +48,38 @@ const userData = getUserData();
             </div>
 
             <ul class="flex flex-col p-2 gap-2">
-                <li
-                    class="flex bg-slate-200 gap-2 px-2 py-2 cursor-pointer rounded-md"
+                <Router-link
+                    to="welcome"
+                    class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
                 >
                     <HomeIcon class="mt-1" />
                     <span v-show="toggleSideBar"> Home</span>
-                </li>
-                <li
+                </Router-link>
+
+                <Router-link
+                    to="payments"
                     class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
                 >
                     <PaymentIcon class="mt-1" />
                     <span v-show="toggleSideBar">Payments</span>
-                </li>
+                </Router-link>
 
-
-                <li
+                <Router-link
                     class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
+                    to="vehicles"
                 >
-                   <Router-link class="flex" to="vehicles">
                     <TruckIcon class="mt-1" />
-                    <span v-show="toggleSideBar" class="ml-2" >Vehicles</span>
-                   
-                   </Router-link>
-                </li>
+                    <span v-show="toggleSideBar" class="ml-2">Vehicles</span>
+                </Router-link>
 
-                 
-               
-
-               
-                <li
+                <Router-link
+                v-show="userData?.user?.role===ADMIN_ROLE"
                     class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
+                    to="users"
                 >
-                   <Router-link class="flex" to="users">
                     <UsersIcon class="mt-1" />
-                    <span v-show="toggleSideBar" class="ml-2" >Users</span>
-                   
-                   </Router-link>
-                </li>
+                    <span v-show="toggleSideBar" class="ml-2">Users</span>
+                </Router-link>
 
                 <hr />
                 <li
@@ -117,7 +114,19 @@ const userData = getUserData();
                             <a class="text-indigo-700" href="">{{
                                 userData?.user?.email
                             }}</a>
+                            <br>
+                            Role : {{ userData?.user?.role }}
+                            <br class="mb-2">
+                           
+                            <Router-link
+                            class=" text-indigo-700 underline font-semibold"
+                    to="profile"
+                >
+                   Profile
+                </Router-link>
                         </li>
+
+                       
 
                         <li
                             @click="loginStore.logout"
@@ -129,7 +138,6 @@ const userData = getUserData();
                 </div>
             </div>
 
-        
             <slot name="main"></slot>
         </div>
         <!-- main section  -->

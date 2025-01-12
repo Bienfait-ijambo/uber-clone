@@ -75,12 +75,11 @@ export const useLoginStore = defineStore("login", () => {
                 ...step1Input.value,
                 ...step2Input.value,
             });
-            console.log(data);
             //http
-            // setUserData(data);
-            // window.location.href = "/app/dashbaord";
+            setUserData(data);
+            window.location.href = "/app/welcome";
             //cookie
-            // successMsg(data?.message);
+            successMsg(data?.message);
 
             loading.value = false;
         } catch (errors) {

@@ -1,6 +1,7 @@
 <script setup>
 import { _debounce } from "../../../../helper/utils";
 import { ref } from "vue";
+import { hideEditButton } from "../../../../middleware/hideEditButton";
 const props = defineProps(["users"]);
 
 const emit = defineEmits(["getUsers", "toggleModal"]);
@@ -10,6 +11,7 @@ const page = ref(1);
 const searchUsers = _debounce(function () {
     emit("getUsers", page.value, query.value);
 }, 200);
+
 </script>
 <template>
     <div class="flex">
@@ -55,6 +57,7 @@ const searchUsers = _debounce(function () {
                 </td>
                 <td class="border 0 border-gray-300 py-2 px-4">
                     <a
+                    v-show="hideEditButton(user?.role)"
                         class="text-indigo-600 px-2 py-1 rounded-md border border-indigo-700 font-semibold hover:bg-indigo-500 hover:text-white"
                         @click="emit('toggleModal', user?.id)"
                         href="#"
