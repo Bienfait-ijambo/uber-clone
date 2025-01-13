@@ -1,5 +1,7 @@
 <script setup>
 import { App } from "../../../api/api";
+import AutocompleteInput from './components/AutoCompleteInput.vue'
+
 </script>
 <template>
     <div class="bg-white flex flex-col  p-2">
@@ -23,14 +25,12 @@ import { App } from "../../../api/api";
                         <option value="">Taxi</option>
                     </select>
                     <div class="flex">
-                        <input
-                            type="text"
-                            placeholder="Type Destination"
-                            class="mb-2 border rounded-md py-2 px-2 w-[100%]"
+                        <AutocompleteInput
+                          
                         />
                         <input
                             type="text"
-                            placeholder="Type location"
+                            placeholder="Type Destion"
                             class="mb-2 border rounded-md py-2 px-2 w-[100%]"
                         />
                     </div>

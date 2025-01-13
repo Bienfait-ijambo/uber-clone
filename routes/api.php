@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\mapbox\PlaceController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,6 +23,18 @@ Route::controller(AuthController::class)->group(function () {
 
 
 // Route::group(['middleware' => 'auth:sanctum'],function(){
+
+
+
+
+Route::controller(PlaceController::class)->group(function () {
+    Route::get('/places', 'fetchPlaces');
+    
+ 
+
+});
+
+
     Route::controller(AuthController::class)->group(function () {
 
 

@@ -2,13 +2,15 @@
 import { ADMIN_ROLE, CUSTOMER_ROLE } from '../../../constants/roles';
 import { getUserData } from '../../../helper/utils';
 
-// import { App } from "../../../api/api";
 const userData=getUserData()
+
 function showDriverStatus(){
     const role=userData?.user?.role
-    if(role===ADMIN_ROLE || role===CUSTOMER_ROLE) return false 
+
+    if(role===ADMIN_ROLE||role===CUSTOMER_ROLE) return false
     return true
 }
+
 </script>
 <template>
     <div class="h-screen w-full bg-white">
@@ -29,9 +31,10 @@ function showDriverStatus(){
                   <div v-show="showDriverStatus()">Status : <span class="text-gray-800 font-bold py-1 px-2 rounded-md"></span></div>
 
                 </div>
-                <hr class="w-[25%]  py-2">
+                <hr v-show="showDriverStatus()" class="w-[25%]  py-2">
 
-                <select
+                <div v-show="showDriverStatus()">
+                    <select
                     class="w-[25%] focus:ring focus:ring-blue-300 mb-3 border rounded-md py-2 px-2"
                     name=""
                     id=""
@@ -46,6 +49,7 @@ function showDriverStatus(){
                 >
                     <span>Change Status</span>
                 </button>
+                </div>
             </div>
         </div>
     </div>
