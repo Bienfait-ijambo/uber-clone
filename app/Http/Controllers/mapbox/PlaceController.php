@@ -17,7 +17,8 @@ class PlaceController extends Controller
 
         $response=Http::get('https://api.mapbox.com/search/geocode/v6/forward',[
             'q'=>!is_null($query) ? $query:'',
-            'access_token'=>env('MAP_BOX_ACCESS_TOKEN')
+            'access_token'=>env('MAP_BOX_ACCESS_TOKEN'),
+            'limit'=>10
         ]);
 
         if($response->successful()){

@@ -10,6 +10,7 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
     const vehicleInput=ref({name:"",model:"",price:""})
     const modalVal=ref(false)
     const edit=ref(false)
+    const places=ref({})
 
     const loading = ref(false);
 
@@ -95,6 +96,21 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
        
     }
 
+
+    async function getPlaces(query="") {
+        try {
+            loading.value = true;
+            const data = await getData(`/places?query=${query}`);
+            places.value = data?.features;
+            loading.value = false;
+        } catch (errors) {
+            loading.value = false;
+            for (const message of errors) {
+                showError(message);
+            }
+        }
+    }
+
     
 
     async function getVehicles(page = 1, query = "") {
@@ -122,7 +138,9 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
         getVehicles,
         vehicleData,
         loading,
-        deleteVehicle
+        deleteVehicle,
+        places,
+        getPlaces
     
         
     };

@@ -1,10 +1,35 @@
 <script setup>
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 import { App } from "../../../api/api";
-import AutocompleteInput from './components/AutoCompleteInput.vue'
+import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
+import AutocompleteInput from "./components/AutoCompleteInput.vue";
+import VehicleList from './components/VehicleList.vue'
+import { useMapStore } from "../../../stores/map/map-store";
+
+const vehicleStore=useVehicleStore()
+
+const {vehicleData}=storeToRefs(vehicleStore)
+const mapStore=useMapStore()
+const {location,destination}=storeToRefs(mapStore)
+
+function selectLocation(place){
+location.value =  place
+}
+function selectDestination(place){
+    destination.value =  place
+
+}
+
+
+
+onMounted(async()=>{
+   await vehicleStore.getVehicles()
+})
 
 </script>
 <template>
-    <div class="bg-white flex flex-col  p-2">
+    <div class="bg-white flex flex-col p-2 mb-10">
         <div class="flex">
             <div class="mr-20">
                 <img :src="App.baseUrl + '/taxi/cab-booking.png'" alt="" />
@@ -21,18 +46,12 @@ import AutocompleteInput from './components/AutoCompleteInput.vue'
                         class="mb-2 border rounded-md py-2 px-2 w-[100%]"
                     >
                         <option value="">Select Taxi</option>
-                        <option value="">Tax 1</option>
-                        <option value="">Taxi</option>
+                        <option v-for="vehicle in vehicleData"
+                        :key="vehicle.id" :value="vehicle.id">{{vehicle.name}} - {{ vehicle?.model }}</option>
                     </select>
                     <div class="flex">
-                        <AutocompleteInput
-                          
-                        />
-                        <input
-                            type="text"
-                            placeholder="Type Destion"
-                            class="mb-2 border rounded-md py-2 px-2 w-[100%]"
-                        />
+                        <AutocompleteInput @selectPlace="selectLocation"  :placeholder="'Search location'" />
+                        <AutocompleteInput @selectPlace="selectDestination"     :placeholder="'Search destination'"/>
                     </div>
                 </div>
                 <button
@@ -45,34 +64,11 @@ import AutocompleteInput from './components/AutoCompleteInput.vue'
         </div>
 
         <div
-            class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+            class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-[100px]"
         >
-            <div
-                class="flex flex-col shadow-md"
-                v-for="car in [1, 2, 3, 4]"
-                :key="car"
-            >
-                <div align="center">
-                    <img
-                        :src="App.baseUrl + '/taxi/cab_booking1.png'"
-                        alt="taxi"
-                    />
-                    <div>
-                        <span class="text-xl text-gray-700">Tesla model Y</span>
-                    </div>
-                    <div>
-                        <span>12$/Km</span>
-                    </div>
-                </div>
-                <div class="flex justify-center p-2 mb-2">
-                    <button
-                        class="flex gap-2 rounded-md border border-indigo-700 text-gray-800 px-2 py-2 hover:bg-indigo-700 hover:text-white font-semibold text-sm"
-                    >
-                        <span class="">Book taxi now</span>
-                        <ArrowRightIcon />
-                    </button>
-                </div>
-            </div>
+
+        <VehicleList :vehicles="vehicleData"/>
+          
         </div>
     </div>
 </template>
