@@ -3,32 +3,36 @@ import { ref } from "vue";
 
 export const useMapStore = defineStore("map-store", () => {
 
-const destination=ref('')
-const location = ref('')
+const destination=ref({})
+const location = ref({})
 
 
-function getDestinationLongitudeAndLatitude(){
-    const longitude=destination.value.properties?.coordinates?.longitude
-    const latitude=destination.value.properties?.coordinates?.latitude
-    return {longitude,latitude}
+function getLocationCoordinates(){
+    const longitude=location.value.properties?.coordinates?.longitude
+    const latitude=location.value.properties?.coordinates?.latitude
+    const place=location.value.properties?.full_address 
 
+    return {longitude,latitude,place}
 
 }
 
-function getLocationLongitudeAndLatitude(){
-    const longitude=destination.value.properties?.coordinates?.longitude
-    const latitude=destination.value.properties?.coordinates?.latitude
-    return {longitude,latitude}
+function getDestinationCoordinates(){
+    const longitude=location.value.properties?.coordinates?.longitude
+    const latitude=location.value.properties?.coordinates?.latitude
+    const place=location.value.properties?.full_address 
+
+    return {longitude,latitude,place}
 }
+
 
 
 
     return {
        destination,
        location,
-       getLocationLongitudeAndLatitude,
-       getDestinationLongitudeAndLatitude
-    
+       getLocationCoordinates,
+       getDestinationCoordinates
+     
         
     };
 });

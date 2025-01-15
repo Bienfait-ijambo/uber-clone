@@ -3,30 +3,46 @@ import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { App } from "../../../api/api";
 import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
-import AutocompleteInput from "./components/AutoCompleteInput.vue";
-import VehicleList from './components/VehicleList.vue'
+import VehicleList from "./components/VehicleList.vue";
 import { useMapStore } from "../../../stores/map/map-store";
+import SelectDestinationInput from "./components/SelectDestinationInput.vue";
+import SelectLocationInput from "./components/SelectLocationInput.vue";
+import { useAutoCompleteStore } from "../../../stores/vehicle/auto-complete-store";
+import { useRouter } from "vue-router";
 
-const vehicleStore=useVehicleStore()
+const vehicleStore = useVehicleStore();
 
-const {vehicleData}=storeToRefs(vehicleStore)
-const mapStore=useMapStore()
-const {location,destination}=storeToRefs(mapStore)
+const { vehicleData } = storeToRefs(vehicleStore);
+const mapStore = useMapStore();
+const { location, destination } = storeToRefs(mapStore);
 
-function selectLocation(place){
-location.value =  place
+const autoCompleteStore = useAutoCompleteStore();
+const {
+    showSuggestionsDestination,
+    queryDestination,
+    queryLocation,
+    showSuggestionsLocation,
+} = storeToRefs(autoCompleteStore);
+
+function selectLocation(place) {
+    location.value = place;
+    showSuggestionsLocation.value = false;
+    queryLocation.value = place?.properties?.full_address;
 }
-function selectDestination(place){
-    destination.value =  place
+function selectDestination(place) {
+    destination.value = place;
+    showSuggestionsDestination.value = false;
+    queryDestination.value = place?.properties?.full_address;
+}
+const router = useRouter();
 
+function bookTaxi() {
+    router.push("/map");
 }
 
-
-
-onMounted(async()=>{
-   await vehicleStore.getVehicles()
-})
-
+onMounted(async () => {
+    await vehicleStore.getVehicles();
+});
 </script>
 <template>
     <div class="bg-white flex flex-col p-2 mb-10">
@@ -39,6 +55,7 @@ onMounted(async()=>{
                     Trust the leading and the most reliable <br />
                     US taxi operator.
                 </h1>
+
                 <div class="flex flex-col mb-2">
                     <select
                         name=""
@@ -46,15 +63,27 @@ onMounted(async()=>{
                         class="mb-2 border rounded-md py-2 px-2 w-[100%]"
                     >
                         <option value="">Select Taxi</option>
-                        <option v-for="vehicle in vehicleData"
-                        :key="vehicle.id" :value="vehicle.id">{{vehicle.name}} - {{ vehicle?.model }}</option>
+                        <option
+                            v-for="vehicle in vehicleData"
+                            :key="vehicle.id"
+                            :value="vehicle.id"
+                        >
+                            {{ vehicle.name }} - {{ vehicle?.model }}
+                        </option>
                     </select>
                     <div class="flex">
-                        <AutocompleteInput @selectPlace="selectLocation"  :placeholder="'Search location'" />
-                        <AutocompleteInput @selectPlace="selectDestination"     :placeholder="'Search destination'"/>
+                        <SelectLocationInput
+                            @selectPlace="selectLocation"
+                            :placeholder="'Search location'"
+                        />
+                        <SelectDestinationInput
+                            @selectPlace="selectDestination"
+                            :placeholder="'Search destination'"
+                        />
                     </div>
                 </div>
                 <button
+                    @click="bookTaxi"
                     class="flex justify-center font-semibold rounded-md bg-indigo-700 text-white px-2 py-2 w-[100%]"
                 >
                     <span class="">Book taxi now</span>
@@ -66,9 +95,7 @@ onMounted(async()=>{
         <div
             class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-[100px]"
         >
-
-        <VehicleList :vehicles="vehicleData"/>
-          
+            <VehicleList :vehicles="vehicleData" />
         </div>
     </div>
 </template>

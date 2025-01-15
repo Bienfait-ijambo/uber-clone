@@ -101,6 +101,7 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
         try {
             loading.value = true;
             const data = await getData(`/places?query=${query}`);
+            // places.value=[]
             places.value = data?.features;
             loading.value = false;
         } catch (errors) {
