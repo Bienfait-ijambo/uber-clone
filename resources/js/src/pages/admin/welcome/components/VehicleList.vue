@@ -2,7 +2,7 @@
 
 <script setup>
 
-const props=defineProps(['vehicles'])
+const props=defineProps(['vehicles',"hideBookButton"])
 </script>
 
 <template>
@@ -25,6 +25,7 @@ const props=defineProps(['vehicles'])
                 </div>
                 <div class="flex justify-center p-2 mb-2">
                     <button
+                    v-show="hideBookButton"
                         class="flex gap-2 rounded-md border border-indigo-700 text-gray-800 px-2 py-2 hover:bg-indigo-700 hover:text-white font-semibold text-sm"
                     >
                         <span class="">Book taxi now</span>

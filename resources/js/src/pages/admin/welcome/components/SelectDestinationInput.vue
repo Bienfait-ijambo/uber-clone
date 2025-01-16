@@ -55,12 +55,12 @@ const emit=defineEmits(['selectPlace'])
                 v-for="place in places"
                 :key="place?.properties"
                 v-show="
-                    place?.properties?.place_formatted === '' ? false : true
+                    place?.properties?.full_address === '' ? false : true
                 "
                 @click="emit('selectPlace',place)"
                 class="flex py-4 px-2 hover:bg-blue-100 cursor-pointer"
             >
-                <span>{{ place?.properties?.place_formatted }}</span>
+                <span>{{ place?.properties?.full_address }}</span>
             </li>
         </ul>
     </div>

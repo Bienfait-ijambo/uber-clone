@@ -118,6 +118,9 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
         try {
             loading.value = true;
             const data = await getData(`/vehicles`);
+            vehicleData.value=[
+                
+            ]
             vehicleData.value = data;
             loading.value = false;
         } catch (errors) {

@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { App } from "../../../api/api";
 import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
 import VehicleList from "./components/VehicleList.vue";
@@ -9,6 +9,7 @@ import SelectDestinationInput from "./components/SelectDestinationInput.vue";
 import SelectLocationInput from "./components/SelectLocationInput.vue";
 import { useAutoCompleteStore } from "../../../stores/vehicle/auto-complete-store";
 import { useRouter } from "vue-router";
+import { hideBookButton } from "../../../middleware/hideBookButton";
 
 const vehicleStore = useVehicleStore();
 
@@ -39,6 +40,10 @@ const router = useRouter();
 function bookTaxi() {
     router.push("/map");
 }
+
+const _hideBookButton=ref(hideBookButton())
+
+
 
 onMounted(async () => {
     await vehicleStore.getVehicles();
@@ -83,6 +88,8 @@ onMounted(async () => {
                     </div>
                 </div>
                 <button
+
+                v-show="_hideBookButton"
                     @click="bookTaxi"
                     class="flex justify-center font-semibold rounded-md bg-indigo-700 text-white px-2 py-2 w-[100%]"
                 >
@@ -95,7 +102,7 @@ onMounted(async () => {
         <div
             class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-[100px]"
         >
-            <VehicleList :vehicles="vehicleData" />
+            <VehicleList :hideBookButton="_hideBookButton" :vehicles="vehicleData" />
         </div>
     </div>
 </template>
