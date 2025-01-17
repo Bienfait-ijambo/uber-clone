@@ -12,8 +12,7 @@ const  map = ref(null)
 
 const mapStore = useMapStore()
 
-const {place:placeL,longitude:longitudeL,latitude:latitudeL}=mapStore.getLocationCoordinates()
-const {place:placeD,longitude:longitudeD,latitude:latitudeD}=mapStore.getDestinationCoordinates()
+const {place:placeL,longitude:longitudeL,latitude:latitudeL}=mapStore.getDriverLocationCoordinates()
 
 
 
@@ -28,19 +27,19 @@ Leaflet.marker([latitudeL, longitudeL]).addTo(map.value)
     .bindPopup(placeL)
     .openPopup();
 
-    Leaflet.marker([latitudeD, longitudeD]).addTo(map.value)
-    .bindPopup(placeD)
-    .openPopup();
+//     Leaflet.marker([latitudeD, longitudeD]).addTo(map.value)
+//     .bindPopup(placeD)
+//     .openPopup();
 
-    Leaflet.Routing.control({
-  waypoints: [
-        Leaflet.latLng(latitudeL, longitudeL),
-        Leaflet.latLng(latitudeD, longitudeD)
-  ],
-  lineOptions: { styles: [{ color: "blue", weight: 5, opacity: 0.8 }] },
-        routeWhileDragging: true,
+//     Leaflet.Routing.control({
+//   waypoints: [
+//         Leaflet.latLng(latitudeL, longitudeL),
+//         Leaflet.latLng(latitudeD, longitudeD)
+//   ],
+//   lineOptions: { styles: [{ color: "blue", weight: 5, opacity: 0.8 }] },
+//         routeWhileDragging: true,
  
-}).addTo(map.value);
+// }).addTo(map.value);
 
     
 })

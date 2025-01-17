@@ -15,7 +15,7 @@ const vehicleStore = useVehicleStore();
 
 const { vehicleData } = storeToRefs(vehicleStore);
 const mapStore = useMapStore();
-const { location, destination } = storeToRefs(mapStore);
+const { customerLocation, customerDestination } = storeToRefs(mapStore);
 
 const autoCompleteStore = useAutoCompleteStore();
 const {
@@ -26,19 +26,19 @@ const {
 } = storeToRefs(autoCompleteStore);
 
 function selectLocation(place) {
-    location.value = place;
+    customerLocation.value = place;
     showSuggestionsLocation.value = false;
     queryLocation.value = place?.properties?.full_address;
 }
 function selectDestination(place) {
-    destination.value = place;
+    customerDestination.value = place;
     showSuggestionsDestination.value = false;
     queryDestination.value = place?.properties?.full_address;
 }
 const router = useRouter();
 
 function bookTaxi() {
-    router.push("/map");
+    router.push("/customer_map");
 }
 
 const _hideBookButton=ref(hideBookButton())

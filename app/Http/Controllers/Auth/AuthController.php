@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\SendEmailEvent;
 use App\Http\Controllers\Controller;
+use App\Models\DriverStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
-
 use DB;
 use Validator;
 
@@ -89,12 +89,13 @@ class AuthController extends Controller
   
         $token = $user->createToken(env('SECRET_TOKEN_KEY'));
         $accessToken= $token->plainTextToken;
+        $status=DriverStatus::getDriverStatusById($user['id']);
 
         return response([
             'user' =>$user,
+            'driverStatus'=>$status,
             'token'=>$accessToken,
             'isLogged'=>true,
-
         ]);
  
  

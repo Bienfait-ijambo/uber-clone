@@ -3,23 +3,34 @@ import { ref } from "vue";
 
 export const useMapStore = defineStore("map-store", () => {
 
-const destination=ref({})
-const location = ref({})
+const customerDestination=ref({})
+const customerLocation = ref({})
+const driverLocation=ref({})
 
 
-function getLocationCoordinates(){
-    const longitude=location.value.properties?.coordinates?.longitude
-    const latitude=location.value.properties?.coordinates?.latitude
-    const place=location.value.properties?.full_address 
+function getDriverLocationCoordinates(){
+    const longitude=driverLocation.value.properties?.coordinates?.longitude
+    const latitude=driverLocation.value.properties?.coordinates?.latitude
+    const place=driverLocation.value.properties?.full_address 
 
     return {longitude,latitude,place}
 
 }
 
-function getDestinationCoordinates(){
-    const longitude=destination.value.properties?.coordinates?.longitude
-    const latitude=destination.value.properties?.coordinates?.latitude
-    const place=destination.value.properties?.full_address 
+
+function getCustomerLocationCoordinates(){
+    const longitude=customerLocation.value.properties?.coordinates?.longitude
+    const latitude=customerLocation.value.properties?.coordinates?.latitude
+    const place=customerLocation.value.properties?.full_address 
+
+    return {longitude,latitude,place}
+
+}
+
+function getCustomerDestinationCoordinates(){
+    const longitude=customerDestination.value.properties?.coordinates?.longitude
+    const latitude=customerDestination.value.properties?.coordinates?.latitude
+    const place=customerDestination.value.properties?.full_address 
 
     return {longitude,latitude,place}
 }
@@ -28,10 +39,12 @@ function getDestinationCoordinates(){
 
 
     return {
-       destination,
-       location,
-       getLocationCoordinates,
-       getDestinationCoordinates
+       customerDestination,
+       customerLocation,
+       getCustomerLocationCoordinates,
+       getCustomerDestinationCoordinates,
+       getDriverLocationCoordinates,
+       driverLocation
      
         
     };

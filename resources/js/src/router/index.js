@@ -43,8 +43,14 @@ const routes = [
           },
 
           {
-            path: "/map",
-            component: () => import("../pages/admin/map/MapPage.vue"),
+            path: "/customer_map",
+            component: () => import("../pages/admin/map/CustomerMapPage.vue"),
+          },
+
+          
+          {
+            path: "/driver_map",
+            component: () => import("../pages/admin/map/DriverMapPage.vue"),
           },
          
           

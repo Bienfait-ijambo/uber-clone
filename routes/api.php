@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Driver\DriverController;
 use App\Http\Controllers\mapbox\PlaceController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use App\Models\User;
@@ -30,9 +31,17 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(PlaceController::class)->group(function () {
     Route::get('/places', 'fetchPlaces');
     
- 
 
 });
+
+
+Route::controller(DriverController::class)->group(function () {
+    Route::post('/driver/status', 'changeDriverStatus');
+    
+
+});
+
+
 
 
     Route::controller(AuthController::class)->group(function () {

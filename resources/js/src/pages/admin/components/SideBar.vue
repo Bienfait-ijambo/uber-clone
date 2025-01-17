@@ -106,7 +106,7 @@ const userData = getUserData();
                     />
                     <ul
                         v-show="topNavBarMenu"
-                        class="bg-white w-[250px] absolute right-4 py-3 px-3 rounded-md shadow-lg divide-y divide-gray-200"
+                        class="bg-white z-[1000] w-[250px] absolute right-4 py-3 px-3 rounded-md shadow-lg divide-y divide-gray-200"
                     >
                         <li class="py-2 px-2">
                             {{ userData?.user?.name }}

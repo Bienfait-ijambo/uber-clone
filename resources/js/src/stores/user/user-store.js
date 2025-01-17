@@ -8,8 +8,7 @@ export const useUserStore = defineStore("user-store", () => {
     const loading = ref(false);
     const roles=ref(['ADMIN','CUSTOMER','DRIVER'])
     const userId=ref(null)
-    const hideBookButton=ref(false)
-
+   
     const modalVal=ref(false)
 
     function toggleModal(id){
@@ -66,5 +65,4 @@ export const useUserStore = defineStore("user-store", () => {
 
 if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot));
-}import { hideBookButton } from './../../middleware/hideBookButton';
-
+}
