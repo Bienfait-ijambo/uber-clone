@@ -37,8 +37,10 @@ Route::controller(PlaceController::class)->group(function () {
 
 Route::controller(DriverController::class)->group(function () {
     Route::post('/driver/status', 'changeDriverStatus');
-    
+    Route::post('/store/driver_location', 'storeDriverLocation');
 
+    
+    
 });
 
 
