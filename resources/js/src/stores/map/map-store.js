@@ -198,6 +198,7 @@ export const useMapStore = defineStore("map-store", () => {
             if (Array.isArray(data) && data.length === 0) {
                 driverLocationForCustomer.value=[]
             } else {
+                listenDriverLocationInRealTime()
                 driverLocationForCustomer.value=data
             }
         } catch (errors) {
@@ -206,6 +207,16 @@ export const useMapStore = defineStore("map-store", () => {
                 showError(message);
             }
         }
+    }
+
+    function listenDriverLocationInRealTime(){
+        window.Echo.channel("driverLocation").listen(
+            "DriverLocationEvent",
+            (event) => {
+               console.log(event?.driverLocation)
+               window.location.reload();
+            }
+        );
     }
 
 

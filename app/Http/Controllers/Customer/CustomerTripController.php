@@ -20,8 +20,10 @@ public function getDriverLocationForCustomer(Request $request)
 
     $data=DB::table('driver_locations')
     ->join('driver_statuses','driver_locations.user_id','=','driver_statuses.user_id')
+    ->join('users','driver_locations.user_id','=','users.id')
+
     ->where('driver_statuses.status',DriverStatus::AVAILABLE_STATUS)
-    ->select('driver_locations.user_id','driver_locations.location_address',
+    ->select('driver_locations.user_id','users.name as user_name','driver_locations.location_address',
     'driver_locations.location_latitude','driver_locations.location_longitude')
     ->get();
 

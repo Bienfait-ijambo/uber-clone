@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Driver;
 
+use App\Events\DriverLocationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\DriverLocation;
 use App\Models\DriverStatus;
@@ -9,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 use DB;
+
 
 class DriverController extends Controller
 {
@@ -74,29 +76,29 @@ class DriverController extends Controller
         $location = DriverLocation::where('user_id', $userId)
             ->first();
 
-        if (!is_null($location)) {
 
-            DriverLocation::where('user_id', $userId)
-                ->update(
-                    [
+            $driverLocation=[
 
-                        'location_address' => $request->address,
-                        'location_latitude' => $request->latitude,
-                        'location_longitude' => $request->longitude,
-
-                    ]
-
-                );
-
-            return response(['message' => 'driver location changed successfully'], 200);
-        } else {
-            DriverLocation::create([
                 'location_address' => $request->address,
                 'location_latitude' => $request->latitude,
                 'location_longitude' => $request->longitude,
                 'user_id' => $request->user_id,
 
-            ]);
+
+            ];
+
+        if (!is_null($location)) {
+
+            
+
+            DriverLocation::where('user_id', $userId)
+                ->update($driverLocation  );
+                DriverLocationEvent::dispatch($driverLocation);
+
+            return response(['message' => 'driver location changed successfully'], 200);
+        } else {
+            DriverLocation::create($driverLocation );
+            DriverLocationEvent::dispatch($driverLocation);
             return response(['message' => 'driver location saved successfully '], 200);
         }
     }
