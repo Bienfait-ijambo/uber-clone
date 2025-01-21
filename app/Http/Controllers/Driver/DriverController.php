@@ -46,6 +46,24 @@ class DriverController extends Controller
         }
     }
 
+
+    public function getDriverLocation(Request $request)
+    {
+        $driverId=$request->user_id;
+        $driverLocation=DriverLocation::where('user_id', $driverId)
+        ->first();
+
+        if(!is_null($driverLocation)){
+            return response([
+                'address' => $driverLocation->location_address,
+                'latitude' => floatval($driverLocation->location_latitude),
+                'longitude' => floatval($driverLocation->location_longitude),
+
+            ], 200);
+        }else{
+            return response([], 200);
+        }
+    }
  
 
     public function storeDriverLocation(Request $request)
@@ -58,7 +76,7 @@ class DriverController extends Controller
 
         if (!is_null($location)) {
 
-            DriverStatus::where('user_id', $userId)
+            DriverLocation::where('user_id', $userId)
                 ->update(
                     [
 
@@ -73,12 +91,10 @@ class DriverController extends Controller
             return response(['message' => 'driver location changed successfully'], 200);
         } else {
             DriverLocation::create([
-
                 'location_address' => $request->address,
                 'location_latitude' => $request->latitude,
                 'location_longitude' => $request->longitude,
                 'user_id' => $request->user_id,
-
 
             ]);
             return response(['message' => 'driver location saved successfully '], 200);

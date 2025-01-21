@@ -53,7 +53,10 @@ function selectLocation(place) {
 
 const router = useRouter();
 
-function plotDriverLocationOnMap() {
+async function plotDriverLocationOnMap() {
+
+    await mapStore.storeDriverLocation()
+
     router.push("/driver_map");
 }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('location_address');
             $table->decimal('location_latitude', 10, 8);
             $table->decimal('location_longitude', 11, 8);
-            $table->string('user_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

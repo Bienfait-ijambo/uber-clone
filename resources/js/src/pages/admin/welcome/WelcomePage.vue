@@ -10,12 +10,13 @@ import SelectLocationInput from "./components/SelectLocationInput.vue";
 import { useAutoCompleteStore } from "../../../stores/vehicle/auto-complete-store";
 import { useRouter } from "vue-router";
 import { hideBookButton } from "../../../middleware/hideBookButton";
+import { showError } from "../../../helper/utils";
 
 const vehicleStore = useVehicleStore();
 
 const { vehicleData } = storeToRefs(vehicleStore);
 const mapStore = useMapStore();
-const { customerLocation, customerDestination } = storeToRefs(mapStore);
+const { customerLocation, customerDestination,vehicleId} = storeToRefs(mapStore);
 
 const autoCompleteStore = useAutoCompleteStore();
 const {
@@ -37,8 +38,19 @@ function selectDestination(place) {
 }
 const router = useRouter();
 
-function bookTaxi() {
-    router.push("/customer_map");
+async function bookTaxi() {
+    const data=await mapStore.validateBookTaxiForm()
+    if(data===true){
+        mapStore.storeCustomerLocation()
+        router.push("/customer_map");
+    }
+}
+
+
+function selectVehicleId(event){
+    const val=event.target.value;
+    vehicleId.value = val;
+
 }
 
 const _hideBookButton=ref(hideBookButton())
@@ -50,7 +62,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <div class="bg-white flex flex-col p-2 mb-10">
+    <div class="bg-white  flex flex-col p-2">
         <div class="flex">
             <div class="mr-20">
                 <img :src="App.baseUrl + '/taxi/cab-booking.png'" alt="" />
@@ -63,6 +75,7 @@ onMounted(async () => {
 
                 <div class="flex flex-col mb-2">
                     <select
+                    @change="selectVehicleId"
                         name=""
                         id=""
                         class="mb-2 border rounded-md py-2 px-2 w-[100%]"
@@ -100,7 +113,7 @@ onMounted(async () => {
         </div>
 
         <div
-            class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-[100px]"
+            class="grid   grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-[50px]"
         >
             <VehicleList :hideBookButton="_hideBookButton" :vehicles="vehicleData" />
         </div>

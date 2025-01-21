@@ -18,7 +18,6 @@ export const useProfileStore = defineStore("profile-store", () => {
 
     async function modifyDriverStatus(input) {
         try {
-            console.log(input);
             loading.value = true;
             const data = await postData(`/driver/status`,{
                 ...input
@@ -26,7 +25,6 @@ export const useProfileStore = defineStore("profile-store", () => {
             successMsg(data?.message)
             loading.value = false;
         } catch (errors) {
-            console.log(errors?.message);
             loading.value = false;
             for (const message of errors) {
                 showError(message);
