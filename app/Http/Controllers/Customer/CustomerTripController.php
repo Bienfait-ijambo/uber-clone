@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerTrip;
 use App\Models\DriverStatus;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use DB;
 class CustomerTripController extends Controller
@@ -61,10 +62,17 @@ public function getDriverLocationForCustomer(Request $request)
 
     public function getCustomerTripDataForDriver(Request $request)
     {
-          
-        $customerTrip=CustomerTrip::where('trip_status', CustomerTrip::PENDING_STATUS)
-        ->get();
 
+        
+    $customerTrip=DB::table('customer_trips')
+    ->join('users','customer_trips.user_id','=','users.id')
+    ->join('vehicles','customer_trips.vehicle_id','=','vehicles.id')
+
+    ->where('customer_trips.trip_status',CustomerTrip::PENDING_STATUS)
+    ->select('customer_trips.*','users.name as user_name','vehicles.name as taxi_name','vehicles.model as taxi_model')
+    ->get();
+
+ 
         return response($customerTrip, 200);
     }
     public function storeCustomerTrip(Request $request)
@@ -74,6 +82,11 @@ public function getDriverLocationForCustomer(Request $request)
         // ->where('vehicle_id', $request->vehicle_id)
         ->where('trip_status', $request->trip_status)
         ->first();
+
+        $vehiclePrice=Vehicle::getVehiclePrice( $request->vehicle_id);
+        $distance=CustomerTrip::calculateDistance($request->location_latitude, $request->location_longitude, $request->destination_latitude, $request->destination_longitude);
+
+        $totalPrice=round($distance, 2)*$vehiclePrice;
 
         if(is_null($customerTrip)){
            
@@ -89,6 +102,9 @@ public function getDriverLocationForCustomer(Request $request)
                 'trip_status' => CustomerTrip::PENDING_STATUS,
                 'user_id' => $request->user_id ,
                 'vehicle_id' => $request->vehicle_id,
+                'distance' => round($distance, 2),
+                'total_price' => $totalPrice,
+                
             ]);
     
             return response(['message'=>'Trip created successfully !']);
@@ -107,6 +123,8 @@ public function getDriverLocationForCustomer(Request $request)
                 'trip_status' => CustomerTrip::PENDING_STATUS,
                 'user_id' => $request->user_id ,
                 'vehicle_id' => $request->vehicle_id,
+                'distance' => round($distance, 2),
+                'total_price' => $totalPrice,
             ]);
 
             return response(['message'=>'Trip created successfully !']);

@@ -1,6 +1,7 @@
 <script setup>
-
+import {getDriverStatusName} from '../../../../constants/driver-status'
 const props = defineProps(["drivers"]);
+
 
 
 </script>
@@ -51,7 +52,7 @@ const props = defineProps(["drivers"]);
                     {{ driver?.location_longitude }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
-                    {{ getDriverStatusName(driver?.status) }}
+<span class="bg-yellow-400 px-2 py-1 rounded-md">{{ getDriverStatusName(driver?.status) }}</span>
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
                 </td>

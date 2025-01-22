@@ -20,8 +20,10 @@ return new class extends Migration
             $table->decimal('destination_latitude', 10, 8);
             $table->decimal('destination_longitude', 11, 8);
             $table->string('trip_status');
-            $table->string('user_id');
-            $table->string('vehicle_id');
+            $table->integer('user_id');
+            $table->integer('vehicle_id');
+            $table->string('distance');
+            $table->string('total_price');
             $table->timestamps();
         });
     }
