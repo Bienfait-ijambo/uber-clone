@@ -3,7 +3,8 @@ import { App } from "../../../api/api";
 import { ref } from "vue";
 import { getUserData } from "../../../helper/utils";
 import { useLoginStore } from "../../../stores/auth/login-store";
-import { ADMIN_ROLE } from "../../../constants/roles";
+import { ADMIN_ROLE, CUSTOMER_ROLE, DRIVER_ROLE } from "../../../constants/roles";
+import { useRouter } from "vue-router";
 
 const toggleSideBar = ref(false);
 const topNavBarMenu = ref(false);
@@ -17,6 +18,21 @@ function toggle() {
   toggleSideBar.value = !toggleSideBar.value;
 }
 const userData = getUserData();
+
+
+const router=useRouter()
+
+function displayNotificationPage(){
+  const role=userData?.user?.role
+
+  if(role===DRIVER_ROLE){
+router.push('/customer_notifications')
+  }
+
+  if(role===CUSTOMER_ROLE){
+router.push('/driver_notifications')
+  }
+}
 </script>
 <template>
   <div class="h-screen flex flex-1">
@@ -92,8 +108,16 @@ const userData = getUserData();
     <!-- main section  -->
 
     <div class="w-full">
-      <div class="flex justify-between">
+      <div class="flex justify-end">
         <div></div>
+        <div class="py-3 px-3">
+          <button @click="displayNotificationPage" class="relative inline-flex items-center justify-center p-2 bg-slate-200  rounded-full">
+            <NotificationIcon class="w-6 h-6" />
+  <span class="absolute top-0 left-8 px-2 text-white font-semibold block  rounded-full bg-red-500">11</span>
+  
+</button>
+
+        </div>
         <div class="py-3 px-3">
           <img
             @click="toggleTopNavBar"

@@ -213,8 +213,7 @@ export const useMapStore = defineStore("map-store", () => {
         window.Echo.channel("driverLocation").listen(
             "DriverLocationEvent",
             (event) => {
-               console.log(event?.driverLocation)
-               window.location.reload();
+               console.log(event)
             }
         );
     }

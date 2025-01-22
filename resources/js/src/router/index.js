@@ -52,6 +52,18 @@ const routes = [
             path: "/driver_map",
             component: () => import("../pages/admin/map/DriverMapPage.vue"),
           },
+
+           
+          {
+            path: "/customer_notifications",
+            component: () => import("../pages/admin/notification/CustomerNotification.vue"),
+          },
+
+          {
+            path: "/driver_notifications",
+            component: () => import("../pages/admin/notification/DriverNotification.vue"),
+          }
+         
          
           
           

@@ -8,11 +8,9 @@ import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.css";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
-import animateMaker from "leaflet.marker.slideto";
 
 const map = ref(null);
-const makerx= ref(null)
-const makery= ref(null)
+
 
 const mapStore = useMapStore();
 const { customerTripData, driverLocationForCustomer } = storeToRefs(mapStore);
@@ -28,8 +26,7 @@ onMounted(async () => {
   await mapStore.getCustomerTripData();
   await mapStore.getDriverLocationForCustomer();
 
-  animateMaker(Leaflet)
-
+ 
   map.value = Leaflet.map("map").setView(
     [
       customerTripData.value.location_latitude,
@@ -76,7 +73,7 @@ onMounted(async () => {
  
   driverLocationForCustomer.value.forEach((location) => {
     //start circle code
-    makerx.value=Leaflet.marker([
+    Leaflet.marker([
       parseFloat(location?.location_latitude),
       parseFloat(location?.location_longitude),
     ])
@@ -85,7 +82,7 @@ onMounted(async () => {
       .openPopup();
     
   //  how to remove a marker based on id
-  makery.value=Leaflet.circle(
+  Leaflet.circle(
       [
         parseFloat(location?.location_latitude),
         parseFloat(location?.location_longitude),
@@ -104,17 +101,7 @@ onMounted(async () => {
   });
 
   
- setTimeout(()=>{
-  console.log('goo....')
-  makerx.value.slideTo(	[34.43601200,-119.82932000], {
-	duration: 10000,
-	// keepAtCenter: true
-});
-makery.value.slideTo(	[34.43601200,-119.82932000], {
-	duration: 10000,
-	// keepAtCenter: true
-});
- },5000)
+
 
 });
 </script>

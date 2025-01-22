@@ -24,7 +24,7 @@ public function getDriverLocationForCustomer(Request $request)
 
     ->where('driver_statuses.status',DriverStatus::AVAILABLE_STATUS)
     ->select('driver_locations.user_id','users.name as user_name','driver_locations.location_address',
-    'driver_locations.location_latitude','driver_locations.location_longitude')
+    'driver_locations.location_latitude','driver_locations.location_longitude','driver_statuses.status')
     ->get();
 
     return response($data);

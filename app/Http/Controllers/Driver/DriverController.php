@@ -78,19 +78,13 @@ class DriverController extends Controller
 
 
             $driverLocation=[
-
                 'location_address' => $request->address,
                 'location_latitude' => $request->latitude,
                 'location_longitude' => $request->longitude,
                 'user_id' => $request->user_id,
-
-
             ];
 
         if (!is_null($location)) {
-
-            
-
             DriverLocation::where('user_id', $userId)
                 ->update($driverLocation  );
                 DriverLocationEvent::dispatch($driverLocation);
