@@ -162,8 +162,21 @@ export const useMapStore = defineStore("map-store", () => {
    
 
 
+    function listenCustomerLocationInRealTime(){
+        window.Echo.channel("customerLocation").listen(
+            "CustomerLocationEvent",
+            (event) => {
+                const newCustomerLocation=event.customerLocation
+              
+                const newArr= customerLocationForDriver.value.filter((customer)=>customer.user_id!==newCustomerLocation.user_id)
+                let newData=[...newArr, event.customerLocation]
+                customerLocationForDriver.value=[...newData]
+                successMsg('Customer location changed !')
+            
+            }
+        );
+    }
 
-    // 
 
     async function getCustomerLocationForDriver() {
 
@@ -176,6 +189,7 @@ export const useMapStore = defineStore("map-store", () => {
             if (Array.isArray(data) && data.length === 0) {
                 customerLocationForDriver.value=[]
             } else {
+                listenCustomerLocationInRealTime()
                 customerLocationForDriver.value=data
             }
         } catch (errors) {
@@ -213,7 +227,13 @@ export const useMapStore = defineStore("map-store", () => {
         window.Echo.channel("driverLocation").listen(
             "DriverLocationEvent",
             (event) => {
-               console.log(event)
+                const newDriverLocation=event.driverLocation
+              
+                const newArr= driverLocationForCustomer.value.filter((driver)=>driver.user_id!==newDriverLocation.user_id)
+                let newData=[...newArr, event.driverLocation]
+                driverLocationForCustomer.value=[...newData]
+                successMsg('Driver location changed !')
+            
             }
         );
     }

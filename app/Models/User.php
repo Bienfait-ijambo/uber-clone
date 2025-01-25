@@ -25,6 +25,15 @@ class User extends Authenticatable
     const DRIVER_ROLE='DRIVER';
 
 
+    
+    public static function getUserName(int $id){
+        $user=User::where('id',$id)->first();
+        return !is_null($user) ?$user->name:null;
+        
+    }
+
+
+
     public static function getUserByEmail(string $email){
         $user=User::where('email',$email)->first();
         return $user;

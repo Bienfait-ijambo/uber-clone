@@ -83,16 +83,21 @@ class DriverController extends Controller
                 'location_longitude' => $request->longitude,
                 'user_id' => $request->user_id,
             ];
+            $driverLocationEvent=$driverLocation;
+            $driverLocationEvent['status']=DriverStatus::getDriverStatusColumn($request->user_id);
+            $driverLocationEvent['user_name']=User::getUserName($request->user_id);
+
 
         if (!is_null($location)) {
             DriverLocation::where('user_id', $userId)
                 ->update($driverLocation  );
-                DriverLocationEvent::dispatch($driverLocation);
+            
+                DriverLocationEvent::dispatch($driverLocationEvent);
 
             return response(['message' => 'driver location changed successfully'], 200);
         } else {
             DriverLocation::create($driverLocation );
-            DriverLocationEvent::dispatch($driverLocation);
+            DriverLocationEvent::dispatch($driverLocationEvent);
             return response(['message' => 'driver location saved successfully '], 200);
         }
     }

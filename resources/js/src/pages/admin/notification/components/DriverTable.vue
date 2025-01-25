@@ -55,6 +55,10 @@ const props = defineProps(["drivers"]);
 <span class="bg-yellow-400 px-2 py-1 rounded-md">{{ getDriverStatusName(driver?.status) }}</span>
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                   
+                    <RouterLink class="text-indigo-600 px-2 py-1 rounded-md   font-semibold hover:bg-indigo-500 hover:text-white"  to="/customer_map">
+                        Move to map
+                    </RouterLink>
                 </td>
                 
                 

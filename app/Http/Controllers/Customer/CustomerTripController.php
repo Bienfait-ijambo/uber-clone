@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Events\CustomerLocationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerTrip;
 use App\Models\DriverStatus;
+use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use DB;
+
 class CustomerTripController extends Controller
 {
 
@@ -88,24 +91,35 @@ public function getDriverLocationForCustomer(Request $request)
 
         $totalPrice=round($distance, 2)*$vehiclePrice;
 
+        $customerTripData=[
+            'location_address' => $request->location_address,
+            'location_latitude' => $request->location_latitude,
+            'location_longitude' =>$request->location_longitude ,
+            'destination_address' =>$request->destination_address, 
+            'destination_latitude' => $request->destination_latitude,
+            'destination_longitude' =>$request->destination_longitude,
+            'trip_status' => CustomerTrip::PENDING_STATUS,
+            'user_id' => $request->user_id ,
+            'vehicle_id' => $request->vehicle_id,
+            'distance' => round($distance, 2),
+            'total_price' => $totalPrice,
+            
+        ];
+        $vehicleData=Vehicle::getVehicle($request->vehicle_id);
+        $customerLocationEventData=$customerTripData;
+        $customerLocationEventData['user_name']=User::getUserName($request->user_id);
+        $customerLocationEventData['taxi_name']=$vehicleData->name;
+        $customerLocationEventData['taxi_model']=$vehicleData->model;
+       
+
         if(is_null($customerTrip)){
            
 
             
-            CustomerTrip::create([
-                'location_address' => $request->location_address,
-                'location_latitude' => $request->location_latitude,
-                'location_longitude' =>$request->location_longitude ,
-                'destination_address' =>$request->destination_address, 
-                'destination_latitude' => $request->destination_latitude,
-                'destination_longitude' =>$request->destination_longitude,
-                'trip_status' => CustomerTrip::PENDING_STATUS,
-                'user_id' => $request->user_id ,
-                'vehicle_id' => $request->vehicle_id,
-                'distance' => round($distance, 2),
-                'total_price' => $totalPrice,
-                
-            ]);
+            CustomerTrip::create($customerTripData);
+            CustomerLocationEvent::dispatch($customerLocationEventData);
+
+        
     
             return response(['message'=>'Trip created successfully !']);
 
@@ -126,6 +140,8 @@ public function getDriverLocationForCustomer(Request $request)
                 'distance' => round($distance, 2),
                 'total_price' => $totalPrice,
             ]);
+            CustomerLocationEvent::dispatch($customerLocationEventData);
+
 
             return response(['message'=>'Trip created successfully !']);
 

@@ -14,6 +14,15 @@ class DriverStatus extends Model
     const AVAILABLE_STATUS_NAME='AVAILABLE';
     const BUSY_STATUS_NAME='BUSY';
 
+
+    public static function getDriverStatusColumn($userId){
+
+        $driverStatus=DriverStatus::where('user_id',$userId)->first();
+        return (!is_null($driverStatus)) ? $driverStatus->status:null;
+
+        
+    }
+
     
     public static function getDriverStatusById($userId){
 
