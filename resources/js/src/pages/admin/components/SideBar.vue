@@ -5,9 +5,13 @@ import { getUserData } from "../../../helper/utils";
 import { useLoginStore } from "../../../stores/auth/login-store";
 import { ADMIN_ROLE, CUSTOMER_ROLE, DRIVER_ROLE } from "../../../constants/roles";
 import { useRouter } from "vue-router";
+import { useMapStore } from "../../../stores/map/map-store";
+import { storeToRefs } from "pinia";
 
 const toggleSideBar = ref(false);
 const topNavBarMenu = ref(false);
+const mapStore=useMapStore()
+const {notificationVal}=storeToRefs(mapStore)
 
 const loginStore = useLoginStore();
 function toggleTopNavBar() {
@@ -26,10 +30,13 @@ function displayNotificationPage(){
   const role=userData?.user?.role
 
   if(role===DRIVER_ROLE){
+    notificationVal.value=0
 router.push('/customer_notifications')
   }
 
   if(role===CUSTOMER_ROLE){
+    notificationVal.value=0
+
 router.push('/driver_notifications')
   }
 }
@@ -67,6 +74,15 @@ router.push('/driver_notifications')
         >
           <HomeIcon class="mt-1" />
           <span v-show="toggleSideBar"> Home</span>
+        </Router-link>
+
+        <Router-link
+          to="trips"
+           v-show="userData?.user?.role === CUSTOMER_ROLE"
+          class="flex hover:bg-slate-200 cursor-pointer gap-2 px-2 py-2 rounded-md"
+        >
+          <TripIcon class="mt-1" />
+          <span v-show="toggleSideBar">Trips</span>
         </Router-link>
 
         <Router-link
@@ -113,7 +129,7 @@ router.push('/driver_notifications')
         <div class="py-3 px-3">
           <button @click="displayNotificationPage" class="relative inline-flex items-center justify-center p-2 bg-slate-200  rounded-full">
             <NotificationIcon class="w-6 h-6" />
-  <span class="absolute top-0 left-8 px-2 text-white font-semibold block  rounded-full bg-red-500">11</span>
+  <span class="absolute top-0 left-8 px-2 text-white font-semibold block  rounded-full bg-red-500">{{notificationVal}}</span>
   
 </button>
 
@@ -160,3 +176,22 @@ router.push('/driver_notifications')
     <!-- main section  -->
   </div>
 </template>
+
+
+<style scoped>
+.router-link-exact-active:hover{
+  color:rgb(31, 30, 30)
+}
+.router-link-exact-active{
+    --tw-bg-opacity: 1;
+    background-color: rgb(67 56 202 / var(--tw-bg-opacity, 1)) /* #4338ca */;
+    font-weight: 600;
+    padding-top: 0.5rem /* 8px */;
+    padding-bottom: 0.5rem /* 8px */;
+    padding-left: 0.5rem /* 8px */;
+    padding-right: 0.5rem /* 8px */;
+    border-radius: 0.375rem /* 6px */;
+    color:white;
+    cursor: pointer;
+}
+</style>

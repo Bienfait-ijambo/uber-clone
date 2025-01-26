@@ -4,6 +4,7 @@ import { getUserData, showError, successMsg } from "../../helper/utils";
 import { getData, postData } from "../../helper/http";
 import { PENDING_STATUS } from "./../../constants/tripe-status";
 import { useRouter } from "vue-router";
+import { CUSTOMER_ROLE, DRIVER_ROLE } from "../../constants/roles";
 
 export const useMapStore = defineStore("map-store", () => {
     const customerDestination = ref({});
@@ -14,6 +15,7 @@ export const useMapStore = defineStore("map-store", () => {
     const customerTripData = ref({});
     const driverLocationForCustomer=ref([])
     const customerLocationForDriver=ref([])
+    const notificationVal=ref(0)
 
     function getDriverLocationCoordinates() {
         const longitude =
@@ -45,6 +47,7 @@ export const useMapStore = defineStore("map-store", () => {
     }
 
     function validateBookTaxiForm() {
+        let error=0;
         return new Promise((resolve, reject) => {
             const { latitude: latitudeL } = getCustomerLocationCoordinates();
             const { longitude: longitudeD } =
@@ -52,19 +55,21 @@ export const useMapStore = defineStore("map-store", () => {
 
             if (typeof vehicleId.value === "object" || vehicleId.value === "") {
                 showError("Please select a vehicle or Taxi !");
+                error++
                 resolve(false);
-            } else {
-                resolve(true);
-            }
+            } 
 
             if (
                 typeof longitudeD === "undefined" ||
                 typeof latitudeL === "undefined"
             ) {
+                error++
                 showError("Please select a location !");
                 resolve(false);
-            } else {
-                resolve(true);
+            }
+
+            if(error===0){
+                resolve(true)
             }
         });
     }
@@ -163,6 +168,7 @@ export const useMapStore = defineStore("map-store", () => {
 
 
     function listenCustomerLocationInRealTime(){
+        const userData=getUserData()
         window.Echo.channel("customerLocation").listen(
             "CustomerLocationEvent",
             (event) => {
@@ -171,6 +177,10 @@ export const useMapStore = defineStore("map-store", () => {
                 const newArr= customerLocationForDriver.value.filter((customer)=>customer.user_id!==newCustomerLocation.user_id)
                 let newData=[...newArr, event.customerLocation]
                 customerLocationForDriver.value=[...newData]
+                if(userData?.user?.role===DRIVER_ROLE){
+                    notificationVal.value++
+
+                }
                 successMsg('Customer location changed !')
             
             }
@@ -224,6 +234,7 @@ export const useMapStore = defineStore("map-store", () => {
     }
 
     function listenDriverLocationInRealTime(){
+        const userData=getUserData()
         window.Echo.channel("driverLocation").listen(
             "DriverLocationEvent",
             (event) => {
@@ -232,6 +243,11 @@ export const useMapStore = defineStore("map-store", () => {
                 const newArr= driverLocationForCustomer.value.filter((driver)=>driver.user_id!==newDriverLocation.user_id)
                 let newData=[...newArr, event.driverLocation]
                 driverLocationForCustomer.value=[...newData]
+
+                if(userData?.user?.role===CUSTOMER_ROLE){
+                    notificationVal.value++
+
+                }
                 successMsg('Driver location changed !')
             
             }
@@ -279,7 +295,8 @@ export const useMapStore = defineStore("map-store", () => {
         customerTripData,
         validateBookTaxiForm,
         storeCustomerLocation,
-        getCustomerTripData
+        getCustomerTripData,
+        notificationVal
     };
 });
 

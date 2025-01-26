@@ -4,6 +4,8 @@ import {
     createWebHistory,
 } from "vue-router";
 import { isAdmin } from "../middleware/isAdmin";
+import { isCustomer } from "../middleware/isCustomer";
+
 
 const routes = [
     {
@@ -62,7 +64,14 @@ const routes = [
           {
             path: "/driver_notifications",
             component: () => import("../pages/admin/notification/DriverNotification.vue"),
+          },
+
+          {
+            path: "/trips",
+            component: () => import("../pages/admin/trip/TripPage.vue"),
+            beforeEnter:isCustomer
           }
+         
          
          
           

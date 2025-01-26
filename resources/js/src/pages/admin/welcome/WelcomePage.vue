@@ -41,7 +41,11 @@ const router = useRouter();
 async function bookTaxi() {
     const data=await mapStore.validateBookTaxiForm()
     if(data===true){
-        mapStore.storeCustomerLocation()
+       await mapStore.storeCustomerLocation()
+       customerLocation.value={}
+       customerDestination.value={}
+       vehicleId.value=null
+        
         router.push("/customer_map");
     }
 }
