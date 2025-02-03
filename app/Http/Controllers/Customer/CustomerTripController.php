@@ -63,6 +63,27 @@ public function getDriverLocationForCustomer(Request $request)
         }
     }
 
+
+
+    
+    public function getAllTripsForCustomer(Request $request)
+    {
+
+        
+    $data=DB::table('customer_trips')
+    ->join('users','customer_trips.user_id','=','users.id')
+    ->join('vehicles','customer_trips.vehicle_id','=','vehicles.id')
+    ->select('customer_trips.*','users.name as user_name','vehicles.name as taxi_name','vehicles.model as taxi_model',
+    'vehicles.stripe_price_id')
+    ->where('users.id',$request->user_id)
+    ->get();
+
+ 
+        return response($data, 200);
+    }
+
+
+
     public function getCustomerTripDataForDriver(Request $request)
     {
 
@@ -70,7 +91,6 @@ public function getDriverLocationForCustomer(Request $request)
     $customerTrip=DB::table('customer_trips')
     ->join('users','customer_trips.user_id','=','users.id')
     ->join('vehicles','customer_trips.vehicle_id','=','vehicles.id')
-
     ->where('customer_trips.trip_status',CustomerTrip::PENDING_STATUS)
     ->select('customer_trips.*','users.name as user_name','vehicles.name as taxi_name','vehicles.model as taxi_model')
     ->get();

@@ -16,7 +16,9 @@ export const useMapStore = defineStore("map-store", () => {
     const driverLocationForCustomer=ref([])
     const customerLocationForDriver=ref([])
     const notificationVal=ref(0)
+    const allCustomerTripData=ref([])
 
+    
     function getDriverLocationCoordinates() {
         const longitude =
             driverLocation.value.properties?.coordinates?.longitude;
@@ -187,6 +189,34 @@ export const useMapStore = defineStore("map-store", () => {
         );
     }
 
+    
+
+    
+
+   
+
+    async function getAllCustomerTrips(userId) {
+      
+        try {
+            loading.value = true;
+            const data = await getData(
+                `/all_customer_trips?user_id=${userId}`
+            );
+            loading.value = false;
+            if (Array.isArray(data) && data.length === 0) {
+                allCustomerTripData.value=[]
+            } else {
+                listenCustomerLocationInRealTime()
+                allCustomerTripData.value=data
+            }
+        } catch (errors) {
+            loading.value = false;
+            for (const message of errors) {
+                showError(message);
+            }
+        }
+    }
+
 
     async function getCustomerLocationForDriver() {
 
@@ -279,6 +309,8 @@ export const useMapStore = defineStore("map-store", () => {
     }
 
     return {
+        allCustomerTripData,
+        getAllCustomerTrips,
         getDriverLocationForCustomer,
         customerLocationForDriver,
         getCustomerLocationForDriver,

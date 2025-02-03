@@ -2,6 +2,7 @@
 
 const props = defineProps(["customers"]);
 
+const emit=defineEmits(['pay'])
 
 
 
@@ -66,6 +67,7 @@ const props = defineProps(["customers"]);
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
                     <button
+                    @click="emit('pay',customer?.stripe_price_id)"
         class="mb-2 bg-indigo-700 text-white py-2 px-2 rounded-md shadow-sm"
     >
         Pay

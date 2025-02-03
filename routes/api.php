@@ -49,7 +49,9 @@ Route::controller(CustomerTripController::class)->group(function () {
     Route::post('/customer_trip', 'storeCustomerTrip');
     Route::get('/customer_trip', 'getCustomerTripData'); 
     Route::get('/driver_location/customer', 'getDriverLocationForCustomer'); 
-    Route::get('/customer_location/driver', 'getCustomerTripDataForDriver'); 
+    Route::get('/customer_location/driver', 'getCustomerTripDataForDriver');
+    Route::get('/all_customer_trips', 'getAllTripsForCustomer'); 
+
 
 });
 
