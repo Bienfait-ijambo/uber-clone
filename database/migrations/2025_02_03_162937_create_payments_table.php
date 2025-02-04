@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('amount');
             $table->string('currency');
             $table->string('payment_id');
+            $table->string('payment_status');
+
 
             $table->timestamps();
         });

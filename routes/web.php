@@ -10,13 +10,15 @@ Route::get('/app/{view_page}', function () {
 
 
 
-// Route::get('/payment-success', function () {
-//     return view('payment-success');
-// })->name('payment.success');
+Route::get('/payment-success', function () {
+    dd('payment succeed');
+})->name('payment.success');
 
 
 Route::get('/checkout_form', [PaymentController::class, 'viewCheckoutForm']);
-// ->middleware('auth:sanctum');
+
+Route::post('/pay', [PaymentController::class, 'pay'])
+->middleware('auth:sanctum');
 
 
 

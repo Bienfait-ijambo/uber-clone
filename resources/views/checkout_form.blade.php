@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stripe Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
     <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
@@ -17,14 +19,16 @@
         <form id="payment-form" class="space-y-4">
             <!-- Card Element -->
             <div id="card-element" class="p-3 border border-gray-300 rounded-md bg-gray-50"></div>
-            <input type="hidden" value="{{$publicKey}}" id="public_key">
             <!-- Submit Button -->
-            <button 
-                type="submit" 
+             <input type="hidden" id="publicKey" value="{{$publicKey}}">
+             <input type="hidden" id="tripCode" value="{{$customerTrip->trip_code}}">
+             <input type="hidden" id="totalPrice" value="{{$customerTrip->total_price}}">
+
+            <button
+                type="submit"
                 id="pay-button"
-                class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400"
-            >
-                Pay $ {{$customerTrip->total_price}}
+                class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400">
+                Pay ${{$customerTrip->total_price}}
             </button>
         </form>
 
@@ -42,11 +46,12 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
+       
+      document.addEventListener('DOMContentLoaded',function(){
 
-        document.addEventListener('DOMContentLoaded', function(){
 
-            const publicKey=document.querySelector('#public_key')
-        const stripe = Stripe(publicKey.value);
+        const stripekey=document.querySelector('#publicKey')
+        const stripe = Stripe(stripekey.value);
         const elements = stripe.elements();
         const card = elements.create("card", {
             style: {
@@ -54,9 +59,13 @@
                     fontSize: "16px",
                     color: "#32325d",
                     fontFamily: "Arial, sans-serif",
-                    '::placeholder': { color: "#aab7c4" },
+                    '::placeholder': {
+                        color: "#aab7c4"
+                    },
                 },
-                invalid: { color: "#fa755a" }
+                invalid: {
+                    color: "#fa755a"
+                }
             }
         });
 
@@ -73,7 +82,10 @@
             loader.classList.remove("hidden");
             cardErrors.classList.add("hidden");
 
-            const { paymentMethod, error } = await stripe.createPaymentMethod({
+            const {
+                paymentMethod,
+                error
+            } = await stripe.createPaymentMethod({
                 type: "card",
                 card: card,
             });
@@ -84,32 +96,60 @@
                 payButton.disabled = false;
                 loader.classList.add("hidden");
             } else {
-                fetch("/checkout", {
-                    method: "POST",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({ payment_method_id: paymentMethod.id })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Payment successful!");
-                    } else {
-                        cardErrors.textContent = "Payment failed: " + data.error;
-                        cardErrors.classList.remove("hidden");
-                    }
-                    payButton.disabled = false;
-                    loader.classList.add("hidden");
-                });
+
+                const userData=getUserData();
+                const tripCode=document.querySelector('#tripCode')
+                const totalPrice=document.querySelector('#totalPrice')
+
+                fetch("/pay", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "authorization":'Bearer '+userData?.token,
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            payment_method_id: paymentMethod.id,
+                            trip_code:tripCode.value,
+                            amount:totalPrice.value
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Payment successful!");
+                        } else {
+                            cardErrors.textContent = "Payment failed: " + data.error;
+                            cardErrors.classList.remove("hidden");
+                        }
+                        payButton.disabled = false;
+                        loader.classList.add("hidden");
+                    });
             }
         });
 
-        })
-        
-       
+
+
+        function getUserData() {
+
+            try {
+                const userData = localStorage.getItem('userData');
+
+                if (typeof userData !== 'object') {
+                    const parseUserData = JSON.parse(userData)
+                    return parseUserData
+                }
+
+            } catch (error) {
+
+                showError(error?.message)
+
+            }
+
+        }
+      })
     </script>
 
 </body>
+
 </html>

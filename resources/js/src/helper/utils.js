@@ -22,6 +22,7 @@ export function successMsg(message) {
   })
 }
 
+// Note : in production use cookie 
 export  function getUserData(){
 
   try {
