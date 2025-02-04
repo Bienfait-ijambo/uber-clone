@@ -68,7 +68,6 @@ class VehicleController extends Controller
             'name' => 'required',
             'model' => 'required',
             'price' => 'required',
-            'stripe_price_id' => 'required',
 
             
             
@@ -85,8 +84,7 @@ class VehicleController extends Controller
             'name'=>$fields['name'],
             'model'=>$fields['model'],
             'price'=>$fields['price'],
-            'stripe_price_id'=>$fields['stripe_price_id'],
-
+          
 
         ]);
 
@@ -107,7 +105,6 @@ class VehicleController extends Controller
             'name' => 'required',
             'model' => 'required',
             'price' => 'required',
-            'stripe_price_id' => 'required',
         ]);
 
         if ($errors->fails()) {
@@ -121,7 +118,6 @@ class VehicleController extends Controller
             'name'=>$fields['name'],
             'model'=>$fields['model'],
             'price'=>$fields['price'],
-            'stripe_price_id'=>$fields['stripe_price_id'],
 
         ]);
 

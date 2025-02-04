@@ -7,7 +7,7 @@ import { required,numeric } from "@vuelidate/validators";
 export const useVehicleStore = defineStore("vehicle-store", () => {
 
     const vehicleData = ref({});
-    const vehicleInput=ref({name:"",model:"",price:"",stripe_price_id:''})
+    const vehicleInput=ref({name:"",model:"",price:""})
     const modalVal=ref(false)
     const edit=ref(false)
     const places=ref({})
@@ -25,7 +25,6 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
         name: { required },
         model: { required },
         price: { required,numeric },
-        stripe_price_id:{required}
       
     };
 

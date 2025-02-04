@@ -17,7 +17,6 @@ export const useMapStore = defineStore("map-store", () => {
     const customerLocationForDriver=ref([])
     const notificationVal=ref(0)
     const allCustomerTripData=ref([])
-
     
     function getDriverLocationCoordinates() {
         const longitude =
@@ -193,8 +192,6 @@ export const useMapStore = defineStore("map-store", () => {
 
     
 
-   
-
     async function getAllCustomerTrips(userId) {
       
         try {
@@ -216,6 +213,10 @@ export const useMapStore = defineStore("map-store", () => {
             }
         }
     }
+
+   
+
+   
 
 
     async function getCustomerLocationForDriver() {

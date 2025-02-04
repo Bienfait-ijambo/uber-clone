@@ -69,15 +69,15 @@ public function getDriverLocationForCustomer(Request $request)
     public function getAllTripsForCustomer(Request $request)
     {
 
+      
         
     $data=DB::table('customer_trips')
     ->join('users','customer_trips.user_id','=','users.id')
     ->join('vehicles','customer_trips.vehicle_id','=','vehicles.id')
-    ->select('customer_trips.*','users.name as user_name','vehicles.name as taxi_name','vehicles.model as taxi_model',
-    'vehicles.stripe_price_id')
+    ->select('customer_trips.*','users.name as user_name','vehicles.name as taxi_name','vehicles.model as taxi_model')
     ->where('users.id',$request->user_id)
     ->get();
-
+    
  
         return response($data, 200);
     }
@@ -123,6 +123,10 @@ public function getDriverLocationForCustomer(Request $request)
             'vehicle_id' => $request->vehicle_id,
             'distance' => round($distance, 2),
             'total_price' => $totalPrice,
+            'trip_code' => CustomerTrip::generateUniqueTripCode(),
+
+            
+            
             
         ];
         $vehicleData=Vehicle::getVehicle($request->vehicle_id);

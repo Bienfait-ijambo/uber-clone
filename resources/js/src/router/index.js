@@ -70,7 +70,14 @@ const routes = [
             path: "/trips",
             component: () => import("../pages/admin/trip/TripPage.vue"),
             beforeEnter:isCustomer
+          },
+
+          
+          {
+            path: "/payments",
+            component: () => import("../pages/admin/payment/PaymentPage.vue"),
           }
+         
          
          
          

@@ -94,6 +94,8 @@ export function getData(endpoint) {
 }
 
 
+
+
 export function handleHttpError(data,resolve,reject){
     if (typeof data?.errors !== "undefined") {
         const errors = Array.isArray(data?.errors)

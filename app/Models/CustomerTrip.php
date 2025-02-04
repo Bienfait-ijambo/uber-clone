@@ -14,6 +14,16 @@ class CustomerTrip extends Model
     const CANCELLED_STATUS='cancelled';
 
 
+    public static  function generateUniqueTripCode() {
+        $timestamp = time();
+        $randomNumber = mt_rand(1000, 9999);
+        $combined = $timestamp . $randomNumber;
+        $tripCode = substr($combined, 0, 12);
+    
+        return $tripCode;
+    }
+
+
     public static function calculateDistance($lat1, $lon1, $lat2, $lon2) {
         $R = 6371; // Radius of the Earth in kilometers
     

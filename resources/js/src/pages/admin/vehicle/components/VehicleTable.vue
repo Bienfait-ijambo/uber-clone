@@ -80,3 +80,5 @@ const emit = defineEmits(["editVehicle", "uploadImage", "removeVehicle","toggleM
         </tbody>
     </table>
 </template>
+
+

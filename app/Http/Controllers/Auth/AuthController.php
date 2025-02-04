@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use DB;
 use Validator;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -74,7 +75,7 @@ class AuthController extends Controller
         }
 
         $user=User::getUserByEmail($fields['email']);
-
+      
         if(!$user || !Hash::check($fields['password'],$user->password)){
 
             return response([
@@ -86,7 +87,8 @@ class AuthController extends Controller
             ],401);
            
         }
-  
+
+     
         $token = $user->createToken(env('SECRET_TOKEN_KEY'));
         $accessToken= $token->plainTextToken;
         $status=DriverStatus::getDriverStatusById($user['id']);

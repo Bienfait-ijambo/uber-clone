@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,5 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Cashier::useCustomerModel(User::class);
     }
 }

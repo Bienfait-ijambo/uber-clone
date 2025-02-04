@@ -46,15 +46,7 @@ const emit = defineEmits(["toggleModal"]);
 
 
             
-            <InputError :errors="vehicleValidation$.stripe_price_id.$errors">
-                <label for="Model">Stripe Price ID</label>
-                <input
-                    v-model="vehicleInput.stripe_price_id"
-                    placeholder=""
-                    type="text"
-                    class="mb-2 border rounded-md py-2 px-2 w-[100%]"
-                />
-            </InputError>
+          
 
 
             

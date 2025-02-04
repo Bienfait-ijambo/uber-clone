@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('vehicle_id');
             $table->string('distance');
             $table->string('total_price');
+            $table->string('trip_code');
+
             $table->timestamps();
         });
     }
