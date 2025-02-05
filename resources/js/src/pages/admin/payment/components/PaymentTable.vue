@@ -12,7 +12,6 @@ const emit = defineEmits(["refund"]);
             <tr class="bg-gray-100 text-left">
                 <td class="border border-gray-300 py-2 px-4">Payment-ID</td>
                 <td class="border border-gray-300 py-2 px-4">Customer-Name</td>
-                <td class="border border-gray-300 py-2 px-4">Customer-Email</td>
                 <td class="border border-gray-300 py-2 px-4">Location</td>
                 <td class="border border-gray-300 py-2 px-4">Destination</td>
                 <td class="border border-gray-300 py-2 px-4">Taxi</td>
@@ -36,9 +35,7 @@ const emit = defineEmits(["refund"]);
                 <td class="border border-gray-300 py-2 px-4">
                     {{ payment.user_name }}
                 </td>
-                <td class="border border-gray-300 py-2 px-4">
-                    <!-- email  -->
-                </td>
+               
                 <td class="border border-gray-300 py-2 px-4">
                     {{ payment.location_address }}
                 </td>
@@ -64,6 +61,7 @@ const emit = defineEmits(["refund"]);
 
                    
                     <a
+                    @click="emit('refund',payment)"
                         class="text-indigo-600 px-2 py-1 rounded-md border border-indigo-700 font-semibold hover:bg-indigo-500 hover:text-white"
                         href="#"
                         >Refund</a

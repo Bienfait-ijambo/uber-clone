@@ -51,6 +51,8 @@ Route::controller(DriverController::class)->group(function () {
 Route::controller(PaymentController::class)->group(function () {
  
     Route::get('/payments', 'getPayments'); 
+    Route::post('/payments/refund', 'refund')->middleware('auth:sanctum');
+
     
 });
 

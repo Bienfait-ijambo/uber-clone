@@ -1,4 +1,3 @@
-// 🍂class Marker
 
 export default function animateMaker(L){
 	L.Marker.include({

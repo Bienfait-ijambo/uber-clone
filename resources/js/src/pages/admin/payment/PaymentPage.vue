@@ -1,23 +1,27 @@
 <script setup>
 import { onMounted } from "vue";
 import PaymentTable from './components/PaymentTable.vue'
+import { usePaymentStore } from "../../../stores/payments/payment-store";
+import { promptUser } from "../../../helper/utils";
 // import CustomerTable from "./components/CustomerTable.vue";
-// import { useMapStore } from "../../../stores/map/map-store";
-// import { storeToRefs } from "pinia";
-// import { getUserData } from "../../../helper/utils";
-// import { App } from "../../../api/api";
-// import { getData } from "../../../helper/http";
 
 
-// const mapStore=useMapStore()
-// const userData=getUserData()
-// const userId=userData?.user?.id
-// const {allCustomerTripData}=storeToRefs(mapStore)
+
+const paymentStore=usePaymentStore()
+
+
+async function refund(payment){
+
+    promptUser('do you want to refund the payment ?').then(async function(){
+        await paymentStore.refundPayment(payment)
+
+    }).catch((error)=>console.log(error))
+
+}
 
 
 onMounted(async () => {
-    // await mapStore.getAllCustomerTrips(userId)
-    console.log('....')
+    await paymentStore.getPayments()
 });
 </script>
 <template>
@@ -26,7 +30,7 @@ onMounted(async () => {
        
         <h1 class="text-2xl mb-4">Payments</h1>
         
-        <PaymentTable />
+        <PaymentTable @refund="refund" :payments="paymentStore.paymentData" />
 
         
     </div>
