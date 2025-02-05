@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Customer\CustomerTripController;
 use App\Http\Controllers\Driver\DriverController;
 use App\Http\Controllers\mapbox\PlaceController;
+use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Vehicle\VehicleController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,6 +45,14 @@ Route::controller(DriverController::class)->group(function () {
     
 });
 
+
+
+
+Route::controller(PaymentController::class)->group(function () {
+ 
+    Route::get('/payments', 'getPayments'); 
+    
+});
 
 Route::controller(CustomerTripController::class)->group(function () {
     Route::post('/customer_trip', 'storeCustomerTrip');

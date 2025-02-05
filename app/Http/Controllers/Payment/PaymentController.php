@@ -86,5 +86,22 @@ class PaymentController extends Controller
        });
     }
 
+   
+    public function getPayments(Request $request)
+    {
+
+        
+    $data=DB::table('payments')
+    ->join('users','payments.user_id','=','users.id')
+    ->join('vehicles','payments.vehicle_id','=','vehicles.id')
+    ->join('customer_trips','payments.trip_id','=','customer_trips.id')
+
+    ->select('payments.payment_status','payments.payment_id','customer_trips.*','users.name as user_name','vehicles.name as taxi_name','vehicles.model as taxi_model')
+    ->get();
+
+ 
+        return response($data, 200);
+    }
+
 
 }

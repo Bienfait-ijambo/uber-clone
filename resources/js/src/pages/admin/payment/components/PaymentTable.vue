@@ -10,7 +10,7 @@ const emit = defineEmits(["refund"]);
     <table class="bg-white rounded-md w-full shadow-md border border-gray-300">
         <thead>
             <tr class="bg-gray-100 text-left">
-                <td class="border border-gray-300 py-2 px-4">#</td>
+                <td class="border border-gray-300 py-2 px-4">Payment-ID</td>
                 <td class="border border-gray-300 py-2 px-4">Customer-Name</td>
                 <td class="border border-gray-300 py-2 px-4">Customer-Email</td>
                 <td class="border border-gray-300 py-2 px-4">Location</td>
@@ -19,7 +19,7 @@ const emit = defineEmits(["refund"]);
                 <td class="border border-gray-300 py-2 px-4">Model</td>
 
                 <td class="border border-gray-300 py-2 px-4">Total-Price</td>
-                <td class="border border-gray-300 py-2 px-4">Payment</td>
+                <td class="border border-gray-300 py-2 px-4">Payment-Status</td>
                 <td class="border border-gray-300 py-2 px-4" >Actions</td>
             </tr>
         </thead>
@@ -27,26 +27,36 @@ const emit = defineEmits(["refund"]);
         <tbody>
             <tr
                 class="text-left"
-               
+               v-for="payment in payments"
+               :key="payment.payment_id"
             >
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.payment_id }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.user_name }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    <!-- email  -->
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.location_address }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.destination_address }}
+
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.taxi_name }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.taxi_model }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
+                    {{ payment.total_price }} $
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
-                 <span class="bg-green-300  px-2 py-1 text-green-800 font-semibold rounded-md"> Succeeded</span>
+                 <span class="bg-green-300  px-2 py-1 text-green-800 font-semibold rounded-md"> {{payment?.payment_status}}</span>
                 </td>
               
 

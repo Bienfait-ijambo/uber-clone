@@ -118,6 +118,7 @@
                     .then(data => {
                         if (data.success) {
                             alert("Payment successful!");
+                            window.location.href='/app/trips'
                         } else {
                             cardErrors.textContent = "Payment failed: " + data.error;
                             cardErrors.classList.remove("hidden");

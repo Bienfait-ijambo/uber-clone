@@ -63,10 +63,13 @@ const emit=defineEmits(['viewCheckOutForm'])
 
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
-                   <span class="bg-yellow-400 px-2 py-1 rounded-md"> {{ customer?.trip_status }}</span>
+                   <span class="bg-yellow-400 px-2 py-1 rounded-md"  v-if="customer?.trip_status=='pending'" > {{ customer?.trip_status }}</span>
+                   <span v-else class="bg-green-400 px-2 py-1 rounded-md"  > {{ customer?.trip_status }}</span>
+
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
                     <button
+                  v-if="customer?.trip_status==='completed'?false:true"
                   @click="emit('viewCheckOutForm',customer?.trip_code)"
         class="mb-2 bg-indigo-700 text-white py-2 px-2 rounded-md shadow-sm"
     >
