@@ -151,7 +151,7 @@ export const useMapStore = defineStore("map-store", () => {
             );
             loading.value = false;
             if (Array.isArray(data) && data.length === 0) {
-                window.location.href = "/welcome";
+                window.location.href = "/app/welcome";
             } else {
                 customerTripData.value = data;
                 loading.value = false;

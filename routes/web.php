@@ -20,7 +20,3 @@ Route::get('/checkout_form', [PaymentController::class, 'viewCheckoutForm']);
 Route::post('/pay', [PaymentController::class, 'pay'])
 ->middleware('auth:sanctum');
 
-
-
-
- 
