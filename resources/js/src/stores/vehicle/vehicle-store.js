@@ -15,6 +15,7 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
     const loading = ref(false);
 
     function toggleModal(){
+        vehicleInput.value={}
         edit.value=false
         modalVal.value=!modalVal.value
     }
