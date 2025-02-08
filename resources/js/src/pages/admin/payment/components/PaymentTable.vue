@@ -53,7 +53,8 @@ const emit = defineEmits(["refund"]);
                     {{ payment.total_price }} $
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
-                 <span class="bg-green-300  px-2 py-1 text-green-800 font-semibold rounded-md"> {{payment?.payment_status}}</span>
+                 <span v-if="payment?.payment_status==='succeed'" class="bg-green-300  px-2 py-1 text-green-800 font-semibold rounded-md"> {{payment?.payment_status}}</span>
+                 <span v-else class="bg-red-500  px-2 py-1 text-green-800 font-semibold rounded-md"> {{payment?.payment_status}}</span>
                 </td>
               
 

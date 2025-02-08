@@ -10,6 +10,9 @@ class CustomerTrip extends Model
 
     const PENDING_STATUS='pending';
     const ONGOING_STATUS='ongoing';
+
+    const STARTED_STATUS='started';
+
     const COMPLETED_STATUS='completed';
     const CANCELLED_STATUS='cancelled';
 

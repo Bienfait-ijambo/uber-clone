@@ -5,6 +5,12 @@ import Step1 from "./login/Step1Login.vue";
 import Step2 from "./login/Step2Login.vue";
 import { useLoginStore } from "../../stores/auth/login-store";
 
+
+
+function redirectToGoogle(){
+    window.location.href='/auth/redirect'
+}
+
 const loginStore = useLoginStore();
 onMounted(() => {
     loginStore.currentStep = Step1;
@@ -33,7 +39,10 @@ onMounted(() => {
                 <div class="font-semibold">or</div>
                 <hr class="h-[1px] bg-black w-[48%] mt-3" />
             </div>
-            <button
+            <button 
+
+            @click="redirectToGoogle"
+          
                 class="flex justify-center bg-gray-300 rounded-md py-2 px-2 gap-2 w-[100%]"
             >
                 <img :src="App.baseUrl + '/img/google.svg'" alt="logo" />

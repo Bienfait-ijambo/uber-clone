@@ -8,6 +8,7 @@ use App\Models\DriverStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
 use DB;
 use Validator;
 use Auth;
@@ -103,6 +104,19 @@ class AuthController extends Controller
  
     }
 
+    public function storeToken(){
+        
+    $user=Auth::user();
+
+    if($user){
+        $token = $user->createToken(env('SECRET_TOKEN_KEY'));
+        $accessToken= $token->plainTextToken;
+        $driverStatus=DriverStatus::getDriverStatusById($user['id']);
+    return view('store_token',compact('accessToken','driverStatus','user'));
+
+    }
+    }
+
     public function register(Request $request)
     {
         $fields = $request->all();
@@ -190,6 +204,44 @@ class AuthController extends Controller
     }
 
    }
+
+
+
+
+
+   
+  public function redirectToGoogle()
+  {
+       return Socialite::driver('google')->redirect();
+  }
+
+  public function createUserViaGoogle(Request $request)
+  {
+
+      $googleUser = Socialite::driver('google')->user();
+
+      $user = User::updateOrCreate([
+          'google_id' => $googleUser->id,
+      ], [
+          'name' => $googleUser->name,
+          'email' => $googleUser->email,
+          'google_id' => $googleUser->id,
+          'role' =>  User::CUSTOMER_ROLE,
+          'otp_code' => '',
+          'is_valid_email' => User::IS_INVALID_EMAIL,
+          'password' => '',
+
+      ]);
+
+      Auth::login($user);
+
+
+      return redirect('/store/token');
+   
+   
+
+  }
+
 
 
 

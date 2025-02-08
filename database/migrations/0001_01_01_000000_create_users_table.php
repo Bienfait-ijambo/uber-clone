@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('otp_code');
 
-            $table->string('googe_id')->nullable();
+            $table->string('google_id')->nullable();
             $table->string('is_valid_email')->default(0);
             $table->string('role')->nullable();
 

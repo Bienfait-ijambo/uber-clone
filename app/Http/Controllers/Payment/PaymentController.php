@@ -73,7 +73,7 @@ class PaymentController extends Controller
 
                     CustomerTrip::where('trip_code', $tripCode)
                         ->update([
-                            'trip_status' => CustomerTrip::COMPLETED_STATUS
+                            'trip_status' => CustomerTrip::ONGOING_STATUS
                         ]);
                     return response()->json(['success' => true, 'payment' => $paymentIntent]);
                 }
@@ -97,7 +97,7 @@ class PaymentController extends Controller
             ->join('vehicles', 'payments.vehicle_id', '=', 'vehicles.id')
             ->join('customer_trips', 'payments.trip_id', '=', 'customer_trips.id')
 
-            ->select('payments.payment_status', 'payments.payment_id', 'customer_trips.*', 'users.name as user_name', 'vehicles.name as taxi_name', 'vehicles.model as taxi_model')
+            ->select('payments.payment_status','payments.id as paymentID', 'payments.payment_id', 'customer_trips.*', 'users.name as user_name', 'vehicles.name as taxi_name', 'vehicles.model as taxi_model')
             ->get();
 
 
@@ -109,22 +109,23 @@ class PaymentController extends Controller
     {
 
 
+       
         $user = Auth::user();
+      
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
-        $user->refund($request->payment_id);
-        //change payment status to cancelled
-
+        
         DB::table('payments')
             ->where('id', $request->id)
             ->update([
-
                 'payment_status' => Payment::CANCELLED,
-
             ]);
+
+        // $user->refund($request->payment_id);
+        //change payment status to cancelled
+
 
 
         return response()->json(['message' => 'payment refund  successfully']);

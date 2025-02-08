@@ -2,7 +2,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 import { getUserData, showError, successMsg } from "../../helper/utils";
 import { getData, postData } from "../../helper/http";
-import { PENDING_STATUS } from "./../../constants/tripe-status";
+import { ONGOING_STATUS, PENDING_STATUS } from "./../../constants/tripe-status";
 import { useRouter } from "vue-router";
 import { CUSTOMER_ROLE, DRIVER_ROLE } from "../../constants/roles";
 
@@ -147,7 +147,7 @@ export const useMapStore = defineStore("map-store", () => {
         try {
             loading.value = true;
             const data = await getData(
-                `/customer_trip?user_id=${userData?.user?.id}&trip_status=${PENDING_STATUS}`
+                `/customer_trip?user_id=${userData?.user?.id}&trip_status=${ONGOING_STATUS}`
             );
             loading.value = false;
             if (Array.isArray(data) && data.length === 0) {
@@ -309,7 +309,38 @@ export const useMapStore = defineStore("map-store", () => {
         }
     }
 
+
+    
+    async function tripCompleted(trip) {
+        try {
+            const data = await postData(`/trip_completed`,{
+                id:trip?.id,
+                user_id:trip?.user_id
+            });
+           successMsg(data?.message)
+        } catch (errors) {
+            for (const message of errors) {
+                showError(message);
+            }
+        }
+    }
+    async function tripStarted(trip) {
+        try {
+            const data = await postData(`/trip_started`,{
+                id:trip?.id,
+                user_id:trip?.user_id
+            });
+           successMsg(data?.message)
+        } catch (errors) {
+            for (const message of errors) {
+                showError(message);
+            }
+        }
+    }
+
     return {
+        tripCompleted,
+        tripStarted,
         allCustomerTripData,
         getAllCustomerTrips,
         getDriverLocationForCustomer,

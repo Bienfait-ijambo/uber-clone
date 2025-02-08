@@ -52,7 +52,7 @@ const emit = defineEmits(["viewCheckOutForm"]);
                 <td class="border border-gray-300 py-2 px-4">
                     <span
                         class="bg-yellow-400 px-2 py-1 rounded-md"
-                        v-if="customer?.trip_status == 'pending'"
+                        v-if="customer?.trip_status == 'ongoing'"
                     >
                         {{ customer?.trip_status }}</span
                     >

@@ -14,7 +14,7 @@ export const usePaymentStore = defineStore("payment-store", () => {
         try {
             loading.value = true;
             const data = await postData(`/payments/refund`,{
-                id:payment?.id,
+                id:payment?.paymentID,
                 payment_id:payment.payment_id
             });
            successMsg(data?.message)

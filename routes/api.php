@@ -63,6 +63,12 @@ Route::controller(CustomerTripController::class)->group(function () {
     Route::get('/customer_location/driver', 'getCustomerTripDataForDriver');
     Route::get('/all_customer_trips', 'getAllTripsForCustomer'); 
 
+    Route::post('/trip_completed', 'tripCompleted'); 
+    Route::post('/trip_started', 'tripStarted'); 
+
+
+    
+
 
 });
 

@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { ADMIN_ROLE, CUSTOMER_ROLE } from '../../../constants/roles';
 import { getUserData } from '../../../helper/utils';
 import { useProfileStore } from '../../../stores/user/profile-store';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import SelectDriverLocation from './components/SelectDriverLocation.vue';
 import { useMapStore } from '../../../stores/map/map-store';
 import { useRouter } from 'vue-router';
@@ -61,7 +61,9 @@ async function plotDriverLocationOnMap() {
 }
 
 
-
+onMounted(()=>{
+    console.log('data :', userData?.user.email)
+})
 </script>
 <template>
     <div class="h-screen w-full bg-white">

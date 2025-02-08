@@ -14,6 +14,7 @@ async function refund(payment){
 
     promptUser('do you want to refund the payment ?').then(async function(){
         await paymentStore.refundPayment(payment)
+        await paymentStore.getPayments()
 
     }).catch((error)=>console.log(error))
 
