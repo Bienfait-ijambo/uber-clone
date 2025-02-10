@@ -12,7 +12,7 @@ export const useSignUpStore = defineStore("signup-store", () => {
     const step2 = ref("step2");
     const step3 = ref("step2");
 
-    const step1Input = ref({ name: "ben", email: "ben@gmail.com" });
+    const step1Input = ref({ name: "", email: "" });
     const step2Input = ref({ password: "" });
     const step3Input = ref({ otp_code: "" });
     const loading = ref(false);
@@ -78,7 +78,7 @@ export const useSignUpStore = defineStore("signup-store", () => {
             });
             //http
             setUserData(data)
-            window.location.href='/app/dashbaord'
+            window.location.href='/app/welcome'
             //cookie
             successMsg(data?.message);
 

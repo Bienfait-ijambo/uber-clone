@@ -46,7 +46,8 @@ async function bookTaxi() {
        customerDestination.value={}
        vehicleId.value=null
         
-        router.push("/customer_map");
+        // router.push("/customer_map");
+        router.push("/trips");
     }
 }
 
